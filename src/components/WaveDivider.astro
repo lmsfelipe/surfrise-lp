@@ -1,0 +1,98 @@
+---
+/**
+ * A seamless, slowly drifting swell used at the biggest tonal jumps.
+ * Three bands of the incoming section's colour drifting at different speeds,
+ * plus a luminous crest on the front wave so the seam reads as water rather
+ * than as a grey band. Each path spans exactly 2x the viewBox width, which is
+ * what makes the -1440px translation loop invisible.
+ */
+interface Props {
+  fill?: string;
+  /** Colour of the two translucent bands behind the solid wave. */
+  haze?: string;
+  crest?: string;
+  height?: number;
+  flip?: boolean;
+  class?: string;
+}
+const {
+  fill = "var(--color-foam)",
+  haze = "#a9c7e4",
+  crest = "var(--color-aqua)",
+  height = 130,
+  flip = false,
+  class: className = "",
+} = Astro.props;
+
+/** Cubic approximation of a sine, tiled to span 2880 units. */
+function crestLine(period: number, amp: number, mid: number) {
+  let d = `M0 ${mid}`;
+  for (let i = 0; i < 2880 / period; i++) {
+    const x = i * period;
+    d += ` C ${x + period * 0.25} ${mid - amp}, ${x + period * 0.75} ${mid + amp}, ${x + period} ${mid}`;
+  }
+  return d;
+}
+const band = (period: number, amp: number, mid: number) =>
+  `${crestLine(period, amp, mid)} L 2880 200 L 0 200 Z`;
+
+const back = band(576, 34, 54);
+const middle = band(480, 24, 88);
+const front = band(360, 16, 124);
+const frontCrest = crestLine(360, 16, 124);
+---
+
+<div
+  class={`sr-wave ${className}`}
+  style={`--wave-fill:${fill};--wave-haze:${haze};--wave-crest:${crest};--wave-h:${height}px;${flip ? "transform:scaleY(-1);" : ""}`}
+  aria-hidden="true"
+>
+  <svg viewBox="0 0 1440 200" preserveAspectRatio="none" width="100%" height="100%">
+    <path class="sr-wave-back" d={back} fill="var(--wave-haze)" opacity="0.20"></path>
+    <path class="sr-wave-mid" d={middle} fill="var(--wave-haze)" opacity="0.46"></path>
+    <g class="sr-wave-front">
+      <path d={front} fill="var(--wave-fill)"></path>
+      <path
+        d={frontCrest}
+        fill="none"
+        stroke="var(--wave-crest)"
+        stroke-width="2.5"
+        opacity="0.7"
+        vector-effect="non-scaling-stroke"></path>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .sr-wave {
+    position: relative;
+    z-index: 3;
+    display: block;
+    width: 100%;
+    height: var(--wave-h);
+    margin-bottom: -1px;
+    line-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .sr-wave svg {
+    display: block;
+  }
+  .sr-wave-back {
+    animation: sr-wave-run 34s linear infinite;
+  }
+  .sr-wave-mid {
+    animation: sr-wave-run 24s linear infinite reverse;
+  }
+  .sr-wave-front {
+    animation: sr-wave-run 17s linear infinite;
+  }
+  @keyframes sr-wave-run {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-1440px);
+    }
+  }
+</style>

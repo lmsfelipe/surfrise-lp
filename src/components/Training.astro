@@ -1,0 +1,151 @@
+---
+import TrainingShowcase from "./TrainingShowcase.tsx";
+
+const stats = [
+  { n: "3", l: "treinos" },
+  { n: "12", l: "exercícios" },
+  { n: "séries", l: "e repetições" },
+];
+---
+
+<section id="treino" class="sr-section sr-light sr-curtain sr-training">
+  <div class="sr-glow sr-drift sr-training-glow" aria-hidden="true"></div>
+
+  <div class="sr-container sr-training-inner">
+    <div class="sr-training-copy">
+      <p class="sr-eyebrow" data-reveal>05 · Do diagnóstico ao treino</p>
+      <h2 class="sr-h2 sr-training-title" data-reveal style="--reveal-delay:90ms">
+        Não basta saber o que está errado.
+        <span class="sr-training-em">Você precisa saber como melhorar.</span>
+      </h2>
+      <p class="sr-lead sr-training-lead" data-reveal style="--reveal-delay:170ms">
+        A partir dos pontos identificados na sua sessão, o SurfRise monta treinos para trabalhar o
+        que você precisa desenvolver.
+      </p>
+
+      <ul class="sr-training-stats" data-reveal style="--reveal-delay:240ms">
+        {
+          stats.map((s) => (
+            <li>
+              <span class="sr-training-stat-n">{s.n}</span>
+              <span class="sr-training-stat-l">{s.l}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="sr-training-goal" data-reveal style="--reveal-delay:300ms">
+        O objetivo é simples: transformar o que a análise apontou em algo que você consegue
+        treinar em terra, antes da próxima sessão.
+      </p>
+
+      <p class="sr-training-disclaimer" data-reveal style="--reveal-delay:360ms">
+        Sugestões gerais de mobilidade e equilíbrio baseadas na sua sessão. Para um plano sob
+        medida — ou se você tem alguma lesão ou limitação — procure um profissional de educação
+        física.
+      </p>
+    </div>
+
+    <div class="sr-training-visual">
+      <TrainingShowcase client:visible />
+    </div>
+  </div>
+</section>
+
+<style>
+  .sr-training {
+    position: relative;
+    background: linear-gradient(180deg, var(--color-sand) 0%, #fffdf9 48%, var(--color-foam) 100%);
+    padding-block: clamp(6rem, 13vw, 10rem);
+    overflow: clip;
+  }
+  .sr-training-glow {
+    inset-block-start: 12%;
+    inset-inline-end: -14%;
+    width: 44vw;
+    height: 44vw;
+    background: radial-gradient(circle, rgb(245 185 66 / 0.2), transparent 68%);
+  }
+
+  .sr-training-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: clamp(3.5rem, 8vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .sr-training-inner {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    }
+  }
+
+  .sr-training-title {
+    margin: 1.1rem 0 0;
+    max-width: 17ch;
+  }
+  .sr-training-em {
+    display: block;
+    background: linear-gradient(96deg, var(--color-brand-deep), var(--color-brand) 55%, var(--color-dusk));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sr-training-lead {
+    margin: 1.5rem 0 0;
+    max-width: 42ch;
+  }
+
+  .sr-training-stats {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    margin: clamp(2rem, 4vw, 2.75rem) 0 0;
+    padding: 1.5rem 0 0;
+    border-top: 1px solid rgb(10 16 32 / 0.1);
+  }
+  .sr-training-stats li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .sr-training-stat-n {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-ink);
+  }
+  .sr-training-stat-l {
+    font-size: 0.8125rem;
+    color: var(--fg-faint);
+  }
+
+  .sr-training-goal {
+    margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+    max-width: 40ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 2vw, 1.3125rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+
+  .sr-training-disclaimer {
+    margin: 1.5rem 0 0;
+    max-width: 46ch;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--fg-faint);
+    padding-inline-start: 0.9rem;
+    border-inline-start: 2px solid rgb(79 91 245 / 0.28);
+  }
+
+  .sr-training-visual {
+    position: relative;
+  }
+</style>

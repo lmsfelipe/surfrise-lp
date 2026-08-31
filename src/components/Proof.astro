@@ -1,0 +1,117 @@
+---
+const shots = [
+  { src: "/prints/01-home.webp", label: "Suas sessões", alt: "Lista de sessões com nota, tamanho da onda e prancha." },
+  { src: "/prints/02-sessao.webp", label: "A sessão", alt: "Detalhe da sessão com nota geral, condições e mídias enviadas." },
+  { src: "/prints/03-analise.webp", label: "Notas por aspecto", alt: "Pontuação por aspecto do surf com barras de progresso." },
+  { src: "/prints/04-ia.webp", label: "O diagnóstico", alt: "Análise em texto feita por IA e três ajustes para a próxima sessão." },
+  { src: "/prints/05-treino.webp", label: "O plano", alt: "Plano de treino com três blocos e doze exercícios." },
+  { src: "/prints/06-treino-detalhe.webp", label: "Os exercícios", alt: "Exercícios do treino com séries, repetições e instruções." },
+];
+
+const track = [...shots, ...shots];
+import { PRINT_SIZES, printSrcSet } from "../data/prints";
+---
+
+<section id="prova" class="sr-section sr-light sr-curtain sr-proof">
+  <div class="sr-container sr-proof-head">
+    <p class="sr-eyebrow" data-reveal>07 · Por dentro</p>
+    <h2 class="sr-h2 sr-proof-title" data-reveal style="--reveal-delay:90ms">
+      Telas reais.
+      <span class="sr-proof-em">Sessões reais.</span>
+    </h2>
+    <p class="sr-lead sr-proof-lead" data-reveal style="--reveal-delay:170ms">
+      Tudo o que você vê aqui é a plataforma rodando com uma conta de verdade — do registro da
+      sessão ao último exercício do treino.
+    </p>
+  </div>
+
+  <div class="sr-marquee sr-proof-marquee" data-reveal="scale" style="--marquee-gap:28px;--marquee-speed:70s">
+    <ul class="sr-marquee-track">
+      {
+        track.map((s, i) => (
+          <li class="sr-proof-item" aria-hidden={i >= shots.length ? "true" : undefined}>
+            <div class="sr-phone">
+              <div class="sr-phone-screen">
+                <span class="sr-phone-notch" aria-hidden="true" />
+                <img
+                  src={s.src}
+                  srcset={printSrcSet(s.src)}
+                  sizes={PRINT_SIZES}
+                  alt={i >= shots.length ? "" : s.alt}
+                  width="706"
+                  height="1532"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="sr-phone-glare" aria-hidden="true" />
+              </div>
+            </div>
+            <span class="sr-proof-label">{s.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  {/*
+    Depoimentos entram aqui assim que houver surfistas do beta com autorização de uso.
+    Estrutura sugerida: <ul class="sr-testimonials"> com foto, nome, pico e citação curta.
+  */}
+</section>
+
+<style>
+  .sr-proof {
+    position: relative;
+    background: linear-gradient(180deg, var(--color-foam) 0%, #ffffff 45%, var(--color-foam-deep) 100%);
+    padding-block: clamp(5.5rem, 12vw, 9rem);
+    overflow: hidden;
+  }
+  .sr-proof-head {
+    max-width: 46rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .sr-proof-title {
+    margin: 1.1rem 0 0;
+  }
+  .sr-proof-em {
+    display: block;
+    background: linear-gradient(96deg, var(--color-brand), var(--color-teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sr-proof-lead {
+    margin: 1.4rem auto 0;
+    max-width: 46ch;
+  }
+
+  .sr-proof-marquee {
+    margin-top: clamp(3rem, 7vw, 4.5rem);
+    padding-block: 0.5rem 1rem;
+  }
+  .sr-marquee-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .sr-proof-item {
+    flex: none;
+    width: clamp(168px, 21vw, 236px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: transform 0.7s var(--ease-fluid);
+  }
+  .sr-proof-item:hover {
+    transform: translateY(-8px);
+  }
+  .sr-proof-label {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 0.78125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--fg-faint);
+  }
+</style>

@@ -1,0 +1,166 @@
+---
+const faqs = [
+  {
+    q: "Preciso de vídeo profissional?",
+    a: "Não. Celular da areia funciona, e foto também.",
+  },
+  {
+    q: "Quanto tempo demora?",
+    a: "Você espera na própria tela e recebe a análise na hora. Não precisa voltar depois.",
+  },
+  {
+    q: "Serve pra quem está começando?",
+    a: "Serve. A análise considera o seu nível e o contexto informado na sessão.",
+  },
+  {
+    q: "Substitui um professor?",
+    a: "Não. Professor corrige na hora e acompanha sua evolução de perto. O SurfRise oferece uma leitura estruturada da sua sessão. Se você já tem professor, pode inclusive levar a análise para ele.",
+  },
+  {
+    q: "O que acontece com meus vídeos?",
+    a: "Ficam na sua conta. São processados para gerar sua análise e não são usados para treinar modelos. Ao apagar a sessão, a mídia também é apagada.",
+  },
+  {
+    q: "Funciona em qualquer praia?",
+    a: "Sim. Você informa o pico e o tamanho da onda, e essas informações entram como contexto da análise.",
+  },
+  {
+    q: "Preciso baixar um app?",
+    a: "Não. O SurfRise funciona direto no navegador do celular.",
+  },
+];
+---
+
+<section id="perguntas" class="sr-section sr-light sr-curtain sr-faq">
+  <div class="sr-container sr-faq-inner">
+    <header class="sr-faq-head">
+      <p class="sr-eyebrow" data-reveal>09 · Perguntas</p>
+      <h2 class="sr-h2 sr-faq-title" data-reveal style="--reveal-delay:90ms">
+        Antes de entrar na água.
+      </h2>
+    </header>
+
+    <div class="sr-faq-list">
+      {
+        faqs.map((f, i) => (
+          <details class="sr-faq-item" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <summary>
+              <span class="sr-faq-q">{f.q}</span>
+              <span class="sr-faq-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                </svg>
+              </span>
+            </summary>
+            <div class="sr-faq-body">
+              <p>{f.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .sr-faq {
+    background: linear-gradient(180deg, var(--color-foam-deep) 0%, #ffffff 40%, var(--color-foam) 100%);
+    padding-block: clamp(5.5rem, 12vw, 9rem);
+  }
+  .sr-faq-inner {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .sr-faq-inner {
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    }
+    .sr-faq-head {
+      position: sticky;
+      top: 7rem;
+    }
+  }
+  .sr-faq-title {
+    margin: 1.1rem 0 0;
+    max-width: 12ch;
+  }
+
+  .sr-faq-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sr-faq-item {
+    border-top: 1px solid rgb(10 16 32 / 0.1);
+  }
+  .sr-faq-item:last-child {
+    border-bottom: 1px solid rgb(10 16 32 / 0.1);
+  }
+
+  .sr-faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: clamp(1.1rem, 2.4vw, 1.5rem);
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.4s ease;
+  }
+  .sr-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .sr-faq-item summary:hover .sr-faq-q {
+    color: var(--color-brand);
+  }
+
+  .sr-faq-q {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.9vw, 1.1875rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    transition: color 0.4s ease;
+    text-wrap: balance;
+  }
+
+  .sr-faq-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    color: var(--color-brand);
+    background: rgb(79 91 245 / 0.09);
+    transition:
+      transform 0.5s var(--ease-fluid),
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+  .sr-faq-item[open] .sr-faq-icon {
+    transform: rotate(135deg);
+    color: #fff;
+    background: var(--color-brand);
+  }
+
+  .sr-faq-body {
+    padding-bottom: clamp(1.15rem, 2.4vw, 1.6rem);
+    animation: sr-faq-open 0.55s var(--ease-fluid);
+  }
+  .sr-faq-body p {
+    margin: 0;
+    max-width: 62ch;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--fg-muted);
+    text-wrap: pretty;
+  }
+  @keyframes sr-faq-open {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+</style>

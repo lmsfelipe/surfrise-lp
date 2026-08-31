@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import WaveDivider from "../components/WaveDivider.astro";
+import Problem from "../components/Problem.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import Analysis from "../components/Analysis.astro";
+import Aspects from "../components/Aspects.astro";
+import Training from "../components/Training.astro";
+import Evolution from "../components/Evolution.astro";
+import Proof from "../components/Proof.astro";
+import Access from "../components/Access.astro";
+import Faq from "../components/Faq.astro";
+import FinalCta from "../components/FinalCta.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base>
+  <Nav />
+
+  <main id="conteudo">
+    <Hero />
+
+    {/* O pé da hero termina exatamente nesta cor, então a onda emenda sem costura. */}
+    <div class="sr-hero-foot">
+      <WaveDivider fill="var(--color-foam)" haze="#e3c9ae" crest="var(--color-glow)" height={140} />
+    </div>
+
+    <Problem />
+    <HowItWorks />
+    <Analysis />
+    <Aspects />
+    <Training />
+    <Evolution />
+    <Proof />
+    <Access />
+    <Faq />
+    <FinalCta />
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .sr-hero-foot {
+    position: relative;
+    z-index: 3;
+    background: #081625;
+    margin-bottom: -1px;
+  }
+</style>

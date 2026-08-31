@@ -1,0 +1,53 @@
+---
+import HowItWorks from "./HowItWorks.tsx";
+---
+
+<section id="como-funciona" class="sr-section sr-dark sr-curtain sr-how">
+  <div class="sr-glow sr-drift sr-how-glow" aria-hidden="true"></div>
+
+  <div class="sr-container sr-how-inner">
+    <header class="sr-how-head">
+      <p class="sr-eyebrow" data-reveal>02 · Como funciona</p>
+      <h2 class="sr-h2" data-reveal style="--reveal-delay:90ms">
+        Da sessão ao próximo treino
+        <span class="sr-how-head-em">em poucos minutos.</span>
+      </h2>
+    </header>
+
+    <HowItWorks client:visible />
+  </div>
+</section>
+
+<style>
+  .sr-how {
+    position: relative;
+    background:
+      radial-gradient(120% 60% at 50% 0%, #0e1732 0%, transparent 60%),
+      linear-gradient(180deg, var(--color-deep), var(--color-navy) 55%, var(--color-deep));
+    padding-block: clamp(5.5rem, 12vw, 9rem);
+    overflow: clip;
+  }
+  .sr-how-glow {
+    inset-block-start: 8%;
+    inset-inline-end: -8%;
+    width: 42vw;
+    height: 42vw;
+    background: radial-gradient(circle, rgb(122 54 163 / 0.28), transparent 66%);
+  }
+  .sr-how-inner {
+    position: relative;
+    z-index: 2;
+  }
+  .sr-how-head {
+    max-width: 44rem;
+    margin-bottom: clamp(3rem, 7vw, 5rem);
+  }
+  .sr-how-head h2 {
+    margin: 1.1rem 0 0;
+  }
+  .sr-how-head-em {
+    display: block;
+    color: var(--fg-faint);
+    font-weight: 400;
+  }
+</style>

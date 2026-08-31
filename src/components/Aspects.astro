@@ -1,0 +1,140 @@
+---
+import AspectGrid from "./AspectGrid.tsx";
+import { PRINT_SIZES, printSrcSet } from "../data/prints";
+---
+
+<section id="aspectos" class="sr-section sr-dark sr-curtain sr-aspects-sec">
+  <div class="sr-glow sr-drift sr-aspects-glow-a" aria-hidden="true"></div>
+  <div class="sr-glow sr-drift-slow sr-aspects-glow-b" aria-hidden="true"></div>
+
+  <div class="sr-container sr-aspects-inner">
+    <header class="sr-aspects-head">
+      <p class="sr-eyebrow" data-reveal>04 · O que é avaliado</p>
+      <h2 class="sr-h2" data-reveal style="--reveal-delay:90ms">
+        Meça o que realmente importa
+        <span class="sr-aspects-head-em">no seu surf.</span>
+      </h2>
+      <p class="sr-lead sr-aspects-lead" data-reveal style="--reveal-delay:170ms">
+        Cada sessão é avaliada nos mesmos 6 aspectos para que você possa comparar sessões
+        diferentes e acompanhar sua evolução.
+      </p>
+    </header>
+
+    <div class="sr-aspects-grid">
+      <aside class="sr-aspects-side" data-reveal="left">
+        <div class="sr-aspects-phone">
+          <div class="sr-aspects-halo" aria-hidden="true"></div>
+          <div class="sr-phone sr-float">
+            <div class="sr-phone-screen">
+              <span class="sr-phone-notch" aria-hidden="true"></span>
+              <img
+                src="/prints/03-analise.webp"
+                srcset={printSrcSet("/prints/03-analise.webp")}
+                sizes={PRINT_SIZES}
+                alt="Tela de análise do SurfRise mostrando a nota geral 6.5 e a pontuação de cada aspecto."
+                width="706"
+                height="1532"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="sr-phone-glare" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <p class="sr-aspects-note">
+          Notas da sessão de exemplo · Canal 1, 0,8 m
+        </p>
+      </aside>
+
+      <div class="sr-aspects-main">
+        <AspectGrid client:visible />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sr-aspects-sec {
+    position: relative;
+    background:
+      radial-gradient(100% 50% at 100% 0%, #131c3d 0%, transparent 58%),
+      linear-gradient(180deg, var(--color-navy), var(--color-deep) 60%, var(--color-abyss));
+    padding-block: clamp(5.5rem, 12vw, 9rem);
+    overflow: clip;
+  }
+  .sr-aspects-glow-a {
+    inset-block-start: -6%;
+    inset-inline-start: 28%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgb(79 91 245 / 0.3), transparent 66%);
+  }
+  .sr-aspects-glow-b {
+    inset-block-end: -12%;
+    inset-inline-start: -12%;
+    width: 34vw;
+    height: 34vw;
+    background: radial-gradient(circle, rgb(53 208 232 / 0.16), transparent 68%);
+  }
+
+  .sr-aspects-inner {
+    position: relative;
+    z-index: 2;
+  }
+  .sr-aspects-head {
+    max-width: 46rem;
+    margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  }
+  .sr-aspects-head h2 {
+    margin: 1.1rem 0 0;
+  }
+  .sr-aspects-head-em {
+    display: block;
+    color: var(--fg-faint);
+    font-weight: 400;
+  }
+  .sr-aspects-lead {
+    margin: 1.4rem 0 0;
+    max-width: 44ch;
+  }
+
+  .sr-aspects-grid {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .sr-aspects-grid {
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+    }
+  }
+
+  .sr-aspects-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.35rem;
+  }
+  .sr-aspects-phone {
+    position: relative;
+    width: min(262px, 72%);
+  }
+  @media (min-width: 1000px) {
+    .sr-aspects-phone { width: 100%; }
+    .sr-aspects-side { position: sticky; top: 6.5rem; }
+  }
+  .sr-aspects-halo {
+    position: absolute;
+    inset: -10% -18%;
+    border-radius: 999px;
+    filter: blur(58px);
+    background: radial-gradient(circle, rgb(79 91 245 / 0.4), transparent 70%);
+    z-index: -1;
+  }
+  .sr-aspects-note {
+    margin: 0;
+    font-size: 0.78125rem;
+    color: var(--fg-faint);
+    text-align: center;
+  }
+</style>

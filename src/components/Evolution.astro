@@ -1,0 +1,197 @@
+---
+/**
+ * Sem gráfico de propósito: a plataforma hoje não tem visualização de evolução,
+ * e desenhar uma aqui prometeria uma tela que o usuário não vai encontrar.
+ * O que é real é o histórico — a lista de sessões com os campos abaixo.
+ */
+const registrado = [
+  { k: "Nota geral e os 6 aspectos", d: "a mesma régua em toda sessão" },
+  { k: "Pico e data", d: "onde e quando você surfou" },
+  { k: "Tamanho da onda", d: "a condição que você enfrentou" },
+  { k: "Prancha usada", d: "com que equipamento" },
+];
+import { PRINT_SIZES, printSrcSet } from "../data/prints";
+---
+
+<section id="evolucao" class="sr-section sr-dark sr-curtain sr-evolution">
+  <div class="sr-glow sr-drift sr-evolution-glow" aria-hidden="true"></div>
+
+  <div class="sr-container sr-evolution-inner">
+    <header class="sr-evolution-head">
+      <p class="sr-eyebrow" data-reveal>06 · Evolução</p>
+      <h2 class="sr-h2" data-reveal style="--reveal-delay:90ms">
+        Uma sessão mostra onde você está.
+        <span class="sr-evolution-em">Várias mostram para onde está indo.</span>
+      </h2>
+      <p class="sr-lead sr-evolution-lead" data-reveal style="--reveal-delay:170ms">
+        Compare suas sessões ao longo do tempo e descubra o que realmente está evoluindo — e o que
+        ainda precisa de trabalho.
+      </p>
+    </header>
+
+    <div class="sr-evolution-grid">
+      <div class="sr-evolution-phone" data-reveal="left">
+        <div class="sr-evolution-halo" aria-hidden="true"></div>
+        <div class="sr-phone sr-float">
+          <div class="sr-phone-screen">
+            <span class="sr-phone-notch" aria-hidden="true"></span>
+            <img
+              src="/prints/01-home.webp"
+              srcset={printSrcSet("/prints/01-home.webp")}
+              sizes={PRINT_SIZES}
+              alt="Lista de sessões no SurfRise, com pico, data, nota, tamanho da onda e prancha usada."
+              width="706"
+              height="1532"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="sr-phone-glare" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-evolution-side">
+        <p class="sr-evolution-kicker" data-reveal style="--reveal-delay:120ms">
+          Toda sessão fica registrada com:
+        </p>
+        <ul class="sr-evolution-list">
+          {
+            registrado.map((r, i) => (
+              <li data-reveal="right" style={`--reveal-delay:${180 + i * 90}ms`}>
+                <span class="sr-evolution-key">{r.k}</span>
+                <span class="sr-evolution-desc">{r.d}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <p class="sr-evolution-close" data-reveal style="--reveal-delay:80ms">
+      Seu surf deixa de ser só sensação. <em>Ele vira histórico.</em>
+    </p>
+  </div>
+</section>
+
+<style>
+  .sr-evolution {
+    position: relative;
+    background:
+      radial-gradient(90% 50% at 12% 100%, #14204a 0%, transparent 62%),
+      linear-gradient(180deg, var(--color-abyss), var(--color-deep) 45%, var(--color-navy));
+    padding-block: clamp(5.5rem, 12vw, 9rem);
+    overflow: clip;
+  }
+  .sr-evolution-glow {
+    inset-block-start: 6%;
+    inset-inline-end: 4%;
+    width: 36vw;
+    height: 36vw;
+    background: radial-gradient(circle, rgb(53 208 232 / 0.2), transparent 68%);
+  }
+  .sr-evolution-inner {
+    position: relative;
+    z-index: 2;
+  }
+  .sr-evolution-head {
+    max-width: 48rem;
+    margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  }
+  .sr-evolution-head h2 {
+    margin: 1.1rem 0 0;
+  }
+  .sr-evolution-em {
+    display: block;
+    color: var(--fg-faint);
+    font-weight: 400;
+  }
+  .sr-evolution-lead {
+    margin: 1.4rem 0 0;
+    max-width: 46ch;
+  }
+
+  .sr-evolution-grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    align-items: center;
+  }
+  @media (min-width: 940px) {
+    .sr-evolution-grid {
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    }
+  }
+
+  .sr-evolution-phone {
+    position: relative;
+    width: min(282px, 74%);
+    margin-inline: auto;
+  }
+
+  /* --- o que fica registrado --- */
+  .sr-evolution-kicker {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  .sr-evolution-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+  .sr-evolution-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-block: clamp(0.9rem, 2vw, 1.15rem);
+    border-top: 1px solid var(--hairline);
+  }
+  .sr-evolution-list li:last-child {
+    border-bottom: 1px solid var(--hairline);
+  }
+  .sr-evolution-key {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.8vw, 1.1875rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+  .sr-evolution-desc {
+    font-size: 0.875rem;
+    color: var(--fg-faint);
+  }
+
+  .sr-evolution-halo {
+    position: absolute;
+    inset: -12% -20%;
+    border-radius: 999px;
+    filter: blur(60px);
+    background: radial-gradient(circle, rgb(122 54 163 / 0.36), transparent 70%);
+    z-index: -1;
+  }
+
+  .sr-evolution-close {
+    margin: clamp(3.5rem, 8vw, 5.5rem) 0 0;
+    max-width: 30ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .sr-evolution-close em {
+    font-style: normal;
+    background: linear-gradient(100deg, #ffffff, #b9c4ff 45%, var(--color-aqua));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>

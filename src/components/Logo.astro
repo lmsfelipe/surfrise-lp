@@ -1,0 +1,43 @@
+---
+/**
+ * A marca oficial (public/brand/logo.webp, gerada por scripts/build-assets.mjs
+ * a partir de src/assets/brand/logo-source.png). É um recorte de raster, então
+ * o texto vem pintado de branco — a marca só aparece sobre fundo escuro na
+ * página (nav flutuante e rodapé). Se um dia ela precisar aparecer sobre claro,
+ * isto vai precisar de uma segunda variante, não de um filtro de CSS.
+ */
+interface Props {
+  /** Altura de exibição, em px. */
+  size?: number;
+  class?: string;
+}
+const { size = 26, class: className = "" } = Astro.props;
+
+// Dimensões nativas do asset — evitam layout shift enquanto a imagem carrega.
+const NATIVE_W = 360;
+const NATIVE_H = 127;
+---
+
+<img
+  class={`sr-logo ${className}`}
+  src="/brand/logo.webp"
+  width={NATIVE_W}
+  height={NATIVE_H}
+  alt="SurfRise"
+  style={`--logo-size:${size}px`}
+  decoding="async"
+/>
+
+<style>
+  .sr-logo {
+    display: block;
+    height: var(--logo-size);
+    width: auto;
+    /* Num container flex em coluna o align-items:stretch padrão vence o
+       width:auto e estica a marca na largura toda — era o que achatava o logo
+       do rodapé (828x293 exibido em 177x24). A marca nunca deve esticar. */
+    align-self: start;
+    flex: none;
+    user-select: none;
+  }
+</style>

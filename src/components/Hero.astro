@@ -1,0 +1,311 @@
+---
+import HeroCanvas from "./HeroCanvas.tsx";
+import HeroCard from "./HeroCard.tsx";
+
+const words = ["Surfe.", "Analise.", "Evolua."];
+---
+
+<section id="topo" class="sr-section sr-dark sr-hero sr-grain">
+  {/*
+    Camada base: pôster estático, sempre presente. É o que aparece de imediato,
+    o que fica se o WebGL falhar e — abaixo de 1000px — a hero inteira.
+
+    É background-image e não <img> porque o enquadramento estica em vez de
+    recortar (object-fit: fill), e o Lighthouse acusa isso como proporção
+    errada. O download continua começando cedo: Base.astro dá preload nos dois
+    pôsteres, o que chega antes até do que o preload scanner acharia a <img>.
+  */}
+  <div class="sr-hero-poster" aria-hidden="true"></div>
+
+  {/*
+    Camada viva: só é hidratada em tela grande e sem prefers-reduced-motion.
+    Fora disso o three.js (128 kB gzip) nem chega a ser baixado.
+  */}
+  <HeroCanvas client:media="(min-width: 1000px) and (prefers-reduced-motion: no-preference)" />
+
+  <div class="sr-hero-veil" aria-hidden="true"></div>
+
+  <div class="sr-container sr-hero-inner">
+    <div class="sr-hero-copy">
+      <p class="sr-badge sr-hero-badge">
+        <span class="sr-badge-dot" aria-hidden="true"></span>
+        Beta aberto · grátis para os primeiros surfistas
+      </p>
+
+      <h1 class="sr-h1 sr-hero-title">
+        {
+          words.map((w, i) => (
+            <span class="sr-hero-line">
+              <span class="sr-hero-word" style={`--i:${i}`}>
+                {i === 2 ? <span class="sr-gradient-text">{w}</span> : w}
+              </span>
+            </span>
+          ))
+        }
+      </h1>
+
+      <p class="sr-lead sr-hero-lead">
+        Descubra o que está limitando seu surf e o que fazer na próxima sessão para melhorar.
+      </p>
+
+      <p class="sr-body sr-hero-sub">
+        Envie fotos ou vídeo da sua sessão e receba uma análise completa do seu surf — com notas,
+        pontos fortes, pontos fracos e um treino criado para você.
+      </p>
+
+      <div class="sr-hero-actions">
+        <a href="#acesso" class="sr-btn sr-btn-primary" data-gtag="cta_click:hero">
+          Quero analisar meu surf grátis
+          <span class="sr-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#como-funciona" class="sr-btn sr-btn-ghost" data-gtag="nav_click:como-funciona-hero">Ver como funciona</a>
+      </div>
+
+      <p class="sr-hero-micro">Sem cartão · funciona no navegador do celular</p>
+    </div>
+
+    <div class="sr-hero-stage">
+      <HeroCard client:visible />
+    </div>
+  </div>
+
+  <a href="#o-problema" class="sr-scrollcue" aria-label="Rolar para o conteúdo" data-gtag="nav_click:scrollcue">
+    <span class="sr-scrollcue-line" aria-hidden="true"></span>
+    <span class="sr-scrollcue-label">role</span>
+  </a>
+</section>
+
+<style>
+  .sr-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(7.5rem, 16vh, 11rem) clamp(6rem, 12vh, 9rem);
+    overflow: hidden;
+  }
+
+  .sr-hero-poster {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* Esticar, não recortar: mantém a linha do horizonte na mesma fração da
+       altura em qualquer proporção de tela — que é o que faz o shader entrar
+       por cima sem dar um salto. */
+    background-image: url("/hero-tall.webp");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+  @media (min-width: 1000px) {
+    .sr-hero-poster {
+      background-image: url("/hero-wide.webp");
+    }
+  }
+
+  .sr-hero-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(
+        102deg,
+        rgb(5 16 28 / 0.86) 0%,
+        rgb(5 16 28 / 0.62) 30%,
+        rgb(5 16 28 / 0.18) 55%,
+        rgb(5 16 28 / 0) 74%
+      ),
+      linear-gradient(
+        to bottom,
+        rgb(5 16 28 / 0.55) 0%,
+        rgb(5 16 28 / 0) 18%,
+        rgb(8 22 37 / 0) 66%,
+        rgb(8 22 37 / 0.72) 94%,
+        rgb(8 22 37 / 1) 100%
+      ),
+      radial-gradient(58% 46% at 6% 88%, rgb(5 16 28 / 0.62), transparent 72%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .sr-hero-veil {
+      background: linear-gradient(
+        to bottom,
+        rgb(5 16 28 / 0.30) 0%,
+        rgb(5 16 28 / 0.30) 42%,
+        rgb(5 16 28 / 0.30) 60%,
+        rgb(5 16 28 / 0.07) 74%,
+        rgb(8 22 37 / 0) 86%,
+        rgb(8 22 37 / 0.7) 96%,
+        rgb(8 22 37 / 1) 100%
+      );
+    }
+  }
+
+  .sr-hero-inner {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    gap: clamp(3rem, 7vw, 4.5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 1000px) {
+    .sr-hero-inner {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    }
+  }
+
+  .sr-hero-copy {
+    max-width: 40rem;
+  }
+
+  /* --- staged entrance ---
+     Os atrasos aqui são o LCP da página: enquanto a copy está em opacity 0 ela
+     não conta como pintada, então cada 100 ms de delay é 100 ms de LCP. A
+     escalonada antiga terminava em 1,26 s e jogava o LCP para 3,5 s. Esta
+     mantém a mesma leitura (badge → título → lead → sub → botões) dentro de
+     ~0,3 s, que o olho ainda lê como sequência e o Lighthouse não penaliza. */
+  .sr-hero-badge,
+  .sr-hero-lead,
+  .sr-hero-sub,
+  .sr-hero-actions,
+  .sr-hero-micro {
+    opacity: 0;
+    animation: sr-hero-rise 0.62s var(--ease-fluid) forwards;
+  }
+  .sr-hero-badge { animation-delay: 0s; }
+  .sr-hero-lead { animation-delay: 0.1s; }
+  .sr-hero-sub { animation-delay: 0.16s; }
+  .sr-hero-actions { animation-delay: 0.22s; }
+  .sr-hero-micro { animation-delay: 0.28s; }
+
+  @keyframes sr-hero-rise {
+    from { opacity: 0; transform: translate3d(0, 18px, 0); filter: blur(5px); }
+    to   { opacity: 1; transform: none; filter: blur(0); }
+  }
+
+  .sr-hero-title {
+    margin: clamp(1.5rem, 3vw, 2.1rem) 0 clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+  .sr-hero-line {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.02em;
+  }
+  .sr-hero-word {
+    display: block;
+    transform: translate3d(0, 110%, 0);
+    /* Mesmo motivo dos atrasos acima: fora da máscara a palavra não pinta, e o
+       h1 é o maior candidato a LCP da hero. */
+    animation: sr-hero-unmask 0.72s var(--ease-fluid) forwards;
+    animation-delay: calc(0.04s + var(--i) * 0.07s);
+  }
+  @keyframes sr-hero-unmask {
+    to { transform: none; }
+  }
+
+  :global(html.no-motion) .sr-hero-word,
+  :global(html.no-motion) .sr-hero-badge,
+  :global(html.no-motion) .sr-hero-lead,
+  :global(html.no-motion) .sr-hero-sub,
+  :global(html.no-motion) .sr-hero-actions,
+  :global(html.no-motion) .sr-hero-micro {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    filter: none;
+  }
+
+  .sr-hero-lead {
+    color: rgb(236 243 251 / 0.94);
+    font-weight: 500;
+    max-width: 32ch;
+  }
+  .sr-hero-sub {
+    margin-top: 0.9rem;
+    max-width: 46ch;
+    color: rgb(226 238 250 / 0.78);
+  }
+  @media (max-width: 900px) {
+    /* Este parágrafo cai na parte mais clara do céu. Em 0.78 o contraste no
+       pior ponto do fundo dava 4,16 — abaixo do mínimo AA de 4,5. */
+    .sr-hero-sub {
+      color: rgb(232 242 252 / 0.94);
+    }
+  }
+
+  .sr-hero-actions :global(.sr-btn-ghost) {
+    background: rgb(6 18 30 / 0.42);
+    border-color: rgb(255 255 255 / 0.22);
+  }
+
+  .sr-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: clamp(1.8rem, 3.5vw, 2.4rem);
+  }
+
+  .sr-hero-micro {
+    margin-top: 1.1rem;
+    font-size: 0.8125rem;
+    color: rgb(226 238 250 / 0.66);
+  }
+  @media (max-width: 900px) {
+    /* Cai sobre a parte clara do pôr do sol e não tem contraste ali. A mesma
+       informação aparece na seção 08 e no CTA final. */
+    .sr-hero-micro {
+      display: none;
+    }
+  }
+
+  .sr-hero-stage {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* --- scroll cue --- */
+  .sr-scrollcue {
+    position: absolute;
+    z-index: 4;
+    bottom: clamp(1.5rem, 4vh, 2.75rem);
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--fg-faint);
+  }
+  @media (min-width: 1000px) {
+    .sr-scrollcue { display: flex; }
+  }
+  .sr-scrollcue-line {
+    position: relative;
+    width: 1px;
+    height: 46px;
+    background: rgb(255 255 255 / 0.14);
+    overflow: hidden;
+  }
+  .sr-scrollcue-line::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: -60%;
+    height: 60%;
+    background: linear-gradient(to bottom, transparent, var(--color-glow));
+    animation: sr-cue 2.6s var(--ease-swell) infinite;
+  }
+  @keyframes sr-cue {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(266%); }
+  }
+  .sr-scrollcue-label {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+</style>

@@ -1,0 +1,175 @@
+---
+import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource-variable/inter";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "SurfRise — Descubra o que está limitando seu surf",
+  description =
+    "Envie fotos ou vídeo da sua sessão e receba uma análise completa do seu surf: notas por aspecto, pontos fortes, pontos fracos e um treino criado para você.",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.app");
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#04070f" />
+
+    <!-- O pôster da hero é background-image (ver Hero.astro). O preload devolve
+         a descoberta antecipada que o preload scanner dava na <img>. -->
+    <link rel="preload" as="image" href="/hero-tall.webp" media="(max-width: 999px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/hero-wide.webp" media="(min-width: 1000px)" fetchpriority="high" />
+
+    <!-- Google tag (gtag.js) — o gtag.js sozinho é 170 kB, mais que todo o
+         resto da página junta. Baixá-lo no <head> fazia ele disputar banda com
+         a hero. A fila do dataLayer é montada aqui e o script vem depois do
+         load: comandos e cliques anteriores ficam na fila e são reproduzidos
+         quando a lib chega, então nada de medição se perde. -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-3VGRQB78MF");
+
+      var srLoadGa = function () {
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-3VGRQB78MF";
+        document.head.appendChild(s);
+      };
+      if (document.readyState === "complete") srLoadGa();
+      else window.addEventListener("load", srLoadGa, { once: true });
+    </script>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SurfRise" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL("/og.jpg", Astro.site ?? "https://surfrise.app")} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SurfRise — Surfe. Analise. Evolua." />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>
+      // Set the motion flag before paint so reveals never flash.
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("no-motion");
+      }
+    </script>
+  </head>
+
+  <body class="bg-abyss">
+    <a href="#conteudo" class="sr-btn sr-btn-ghost sr-skip">Pular para o conteúdo</a>
+    <div id="sr-progress" class="sr-progress" aria-hidden="true"></div>
+
+    <slot />
+
+    <script>
+      import Lenis from "lenis";
+
+      const reduced = document.documentElement.classList.contains("no-motion");
+
+      /* ---------- Smooth, weighted scroll (the "swell") ---------- */
+      if (!reduced && window.matchMedia("(min-width: 768px)").matches) {
+        const lenis = new Lenis({
+          duration: 1.15,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          wheelMultiplier: 1,
+          touchMultiplier: 1.6,
+        });
+        const raf = (time: number) => {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+
+        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+          a.addEventListener("click", (e) => {
+            const id = a.getAttribute("href");
+            if (!id || id === "#") return;
+            const target = document.querySelector(id);
+            if (!target) return;
+            e.preventDefault();
+            lenis.scrollTo(target as HTMLElement, { offset: -80 });
+          });
+        });
+      }
+
+      /* ---------- Reveal choreography ---------- */
+      const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      if (reduced) {
+        items.forEach((el) => el.classList.add("is-in"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            });
+          },
+          { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+
+      /* ---------- GA event tracking (CTAs + anchor nav links) ---------- */
+      document.addEventListener("click", (e) => {
+        const el = (e.target as HTMLElement)?.closest<HTMLElement>("[data-gtag]");
+        if (!el) return;
+        const [eventName, location] = (el.dataset.gtag ?? "").split(":");
+        if (!eventName) return;
+        const clone = el.cloneNode(true) as HTMLElement;
+        clone.querySelectorAll("[aria-hidden]").forEach((n) => n.remove());
+        // @ts-expect-error gtag is loaded globally via the inline GA snippet
+        window.gtag?.("event", eventName, {
+          link_location: location,
+          link_label: clone.textContent?.trim().replace(/\s+/g, " "),
+          link_url: el instanceof HTMLAnchorElement ? el.href : undefined,
+        });
+      });
+
+      /* ---------- Nav state + scroll progress ---------- */
+      const nav = document.getElementById("sr-nav");
+      const progress = document.getElementById("sr-progress");
+
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const y = window.scrollY;
+        if (nav) nav.classList.toggle("is-stuck", y > 24);
+        if (progress) {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          progress.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
+        }
+      };
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      };
+      update();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll, { passive: true });
+    </script>
+  </body>
+</html>

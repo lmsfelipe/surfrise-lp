@@ -1,0 +1,164 @@
+---
+const quotes = [
+  "Hoje meu surf estava travado.",
+  "Não sei se estou melhorando.",
+  "Não sei o que preciso treinar.",
+];
+---
+
+<section id="o-problema" class="sr-section sr-light sr-problem">
+  <div class="sr-glow sr-drift sr-problem-glow-a" aria-hidden="true"></div>
+  <div class="sr-glow sr-drift-slow sr-problem-glow-b" aria-hidden="true"></div>
+
+  <div class="sr-container sr-problem-inner">
+    <div class="sr-problem-head">
+      <p class="sr-eyebrow" data-reveal>01 · O problema</p>
+      <h2 class="sr-h2 sr-problem-title" data-reveal style="--reveal-delay:90ms">
+        Você termina a sessão,
+        <span class="sr-problem-em">mas não sabe o que precisa melhorar.</span>
+      </h2>
+    </div>
+
+    <ul class="sr-problem-quotes">
+      {
+        quotes.map((q, i) => (
+          <li
+            class="sr-quote"
+            data-reveal="right"
+            style={`--reveal-delay:${180 + i * 130}ms;--tilt:${i % 2 === 0 ? "-1.1deg" : "1.4deg"};--nudge:${i * 14}px`}
+          >
+            <span class="sr-quote-mark" aria-hidden="true">“</span>
+            <span class="sr-quote-text">{q}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="sr-container sr-problem-resolve" data-reveal style="--reveal-delay:120ms">
+    <div class="sr-hairline"></div>
+    <p class="sr-problem-answer">
+      O SurfRise transforma essas sensações em uma
+      <em>análise objetiva da sua sessão</em> — e mostra o que você pode trabalhar para evoluir.
+    </p>
+  </div>
+</section>
+
+<style>
+  .sr-problem {
+    background: linear-gradient(180deg, var(--color-foam) 0%, #ffffff 62%, var(--color-foam) 100%);
+    padding-block: clamp(6rem, 13vw, 10rem);
+    overflow: hidden;
+  }
+
+  .sr-problem-glow-a {
+    inset-block-start: -10%;
+    inset-inline-start: -12%;
+    width: 46vw;
+    height: 46vw;
+    background: radial-gradient(circle, rgb(79 91 245 / 0.16), transparent 68%);
+  }
+  .sr-problem-glow-b {
+    inset-block-end: -18%;
+    inset-inline-end: -10%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgb(53 208 232 / 0.18), transparent 68%);
+  }
+
+  .sr-problem-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: clamp(2.75rem, 6vw, 4.5rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .sr-problem-inner {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+  }
+
+  .sr-problem-title {
+    margin: 1.1rem 0 0;
+    max-width: 22ch;
+  }
+  .sr-problem-em {
+    display: block;
+    background: linear-gradient(96deg, var(--color-brand-deep), var(--color-brand) 45%, var(--color-teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sr-problem-quotes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sr-quote {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-inline-start: var(--nudge);
+    padding: 1.15rem 1.5rem 1.25rem;
+    border-radius: 22px 22px 22px 6px;
+    background: #fff;
+    border: 1px solid rgb(10 16 32 / 0.1);
+    box-shadow:
+      0 2px 6px rgb(10 16 32 / 0.08),
+      0 22px 44px -26px rgb(10 16 32 / 0.55);
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 1.8vw, 1.3125rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    rotate: var(--tilt);
+    transition: rotate 0.7s var(--ease-fluid), transform 0.7s var(--ease-fluid);
+  }
+  .sr-quote:hover {
+    rotate: 0deg;
+    transform: translateY(-3px);
+  }
+  .sr-quote-mark {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    line-height: 0.7;
+    font-weight: 800;
+    color: color-mix(in oklab, var(--color-brand) 42%, transparent);
+    translate: 0 0.18em;
+  }
+  .sr-quote-text {
+    text-wrap: balance;
+  }
+
+  .sr-problem-resolve {
+    position: relative;
+    z-index: 2;
+    margin-top: clamp(3.5rem, 8vw, 6rem);
+  }
+  .sr-problem-answer {
+    margin: clamp(1.75rem, 4vw, 2.75rem) 0 0;
+    max-width: 46rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.6vw, 1.875rem);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+  .sr-problem-answer em {
+    font-style: normal;
+    font-weight: 800;
+    background: linear-gradient(96deg, var(--color-brand), var(--color-teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>

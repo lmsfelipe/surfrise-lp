@@ -1,0 +1,311 @@
+---
+const triad = [
+  {
+    k: "Sensação",
+    t: "Você identifica o que sentiu.",
+  },
+  {
+    k: "Diagnóstico",
+    t: "A análise ajuda a entender onde está o problema e por quê.",
+  },
+  {
+    k: "Ação",
+    t: "O treino transforma esse diagnóstico em algo que você pode trabalhar.",
+  },
+];
+import { PRINT_SIZES, printSrcSet } from "../data/prints";
+---
+
+<section id="a-analise" class="sr-section sr-light sr-curtain sr-analysis">
+  <div class="sr-glow sr-drift-slow sr-analysis-glow" aria-hidden="true"></div>
+
+  <div class="sr-container sr-analysis-inner">
+    <header class="sr-analysis-head">
+      <p class="sr-eyebrow" data-reveal>03 · A análise</p>
+      <h2 class="sr-h2" data-reveal style="--reveal-delay:90ms">
+        Da sensação ao diagnóstico.
+        <span class="sr-analysis-head-em">Do diagnóstico à ação.</span>
+      </h2>
+      <p class="sr-lead sr-analysis-lead" data-reveal style="--reveal-delay:170ms">
+        Não é feedback genérico. É a análise da sua sessão, baseada nas mídias e nas informações
+        que você registrou.
+      </p>
+    </header>
+
+    <div class="sr-exchange">
+      <div class="sr-exchange-flow">
+        <figure class="sr-said sr-said--you" data-reveal="left">
+          <figcaption class="sr-said-label">Você escreveu</figcaption>
+          <blockquote>Me achei travado nas manobras.</blockquote>
+        </figure>
+
+        <svg
+          class="sr-draw sr-exchange-link"
+          data-reveal
+          style="--reveal-delay:120ms"
+          viewBox="0 0 120 220"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M8 14 C 8 96, 112 108, 112 206"
+            fill="none"
+            stroke="url(#sr-flowgrad)"
+            stroke-width="2"
+            stroke-linecap="round"></path>
+          <defs>
+            <linearGradient id="sr-flowgrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--color-teal)"></stop>
+              <stop offset="100%" stop-color="var(--color-brand)"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <figure class="sr-said sr-said--ai" data-reveal="right" style="--reveal-delay:220ms">
+          <figcaption class="sr-said-label">
+            <span class="sr-said-spark" aria-hidden="true">✦</span> A análise devolveu
+          </figcaption>
+          <blockquote>
+            Sua postura um pouco ereta e os braços passivos impedem que a energia do corpo se
+            transfira para a prancha.
+          </blockquote>
+        </figure>
+      </div>
+
+      <div class="sr-exchange-phone" data-reveal="scale" style="--reveal-delay:180ms">
+        <div class="sr-exchange-halo" aria-hidden="true"></div>
+        <div class="sr-phone">
+          <div class="sr-phone-screen">
+            <span class="sr-phone-notch" aria-hidden="true"></span>
+            <img
+              src="/prints/04-ia.webp"
+              srcset={printSrcSet("/prints/04-ia.webp")}
+              sizes={PRINT_SIZES}
+              alt="Tela do SurfRise com a análise feita por IA e três ajustes sugeridos para a próxima sessão."
+              width="706"
+              height="1532"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="sr-phone-glare" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="sr-triad">
+      {
+        triad.map((s, i) => (
+          <li class="sr-triad-item" data-reveal style={`--reveal-delay:${i * 110}ms`}>
+            <span class="sr-triad-key">{s.k}</span>
+            <p class="sr-body">{s.t}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .sr-analysis {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-foam) 55%, var(--color-foam-deep) 100%);
+    padding-block: clamp(5.5rem, 12vw, 9rem);
+    overflow: clip;
+  }
+  .sr-analysis-glow {
+    inset-block-start: 26%;
+    inset-inline-start: -14%;
+    width: 44vw;
+    height: 44vw;
+    background: radial-gradient(circle, rgb(35 183 156 / 0.18), transparent 68%);
+  }
+  .sr-analysis-inner {
+    position: relative;
+    z-index: 2;
+  }
+  .sr-analysis-head {
+    max-width: 46rem;
+  }
+  .sr-analysis-head h2 {
+    margin: 1.1rem 0 0;
+  }
+  .sr-analysis-head-em {
+    display: block;
+    color: var(--fg-faint);
+    font-weight: 400;
+  }
+  .sr-analysis-lead {
+    margin: 1.4rem 0 0;
+    max-width: 42ch;
+  }
+
+  /* --- the exchange --- */
+  .sr-exchange {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+    align-items: center;
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+  @media (min-width: 900px) {
+    .sr-exchange {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    }
+  }
+
+  .sr-exchange-flow {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .sr-exchange-link {
+    position: absolute;
+    inset-block: 22%;
+    inset-inline-start: 8%;
+    width: 46%;
+    height: 56%;
+    z-index: 0;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  @media (max-width: 640px) {
+    .sr-exchange-link { display: none; }
+  }
+
+  /*
+   * Valores em unidades do viewBox (o traçado mede ~226). Já foi feito com
+   * pathLength="1" + dasharray 1, mas isso depende de o navegador normalizar o
+   * comprimento — onde não normaliza, o traço vira um ponto de 1px e a linha
+   * nunca aparece. Número absoluto não depende de nada.
+   */
+  :global(.sr-draw path) {
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+    transition: stroke-dashoffset 1.6s var(--ease-fluid) 0.25s;
+  }
+  :global(.sr-draw.is-in path) {
+    stroke-dashoffset: 0;
+  }
+
+  .sr-said {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    padding: clamp(1.4rem, 2.6vw, 1.9rem);
+    border-radius: 24px;
+    max-width: 34rem;
+  }
+  .sr-said-label {
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .sr-said blockquote {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 2vw, 1.375rem);
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+
+  .sr-said--you {
+    background: #fff;
+    border: 1px solid rgb(10 16 32 / 0.1);
+    box-shadow:
+      0 2px 6px rgb(10 16 32 / 0.08),
+      0 20px 44px -28px rgb(10 16 32 / 0.55);
+    color: var(--color-ink);
+    border-end-start-radius: 8px;
+  }
+  .sr-said--you .sr-said-label {
+    color: var(--fg-faint);
+  }
+
+  .sr-said--ai {
+    align-self: flex-end;
+    color: #fff;
+    background:
+      radial-gradient(130% 100% at 0% 0%, rgb(122 54 163 / 0.5), transparent 62%),
+      linear-gradient(150deg, #14204a, #0a1024 62%);
+    border: 1px solid rgb(124 133 255 / 0.26);
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.1) inset,
+      0 30px 60px -34px rgb(10 16 32 / 0.75),
+      0 0 60px -26px rgb(79 91 245 / 0.6);
+    border-end-end-radius: 8px;
+  }
+  .sr-said--ai .sr-said-label {
+    color: #b9c4ff;
+  }
+  .sr-said-spark {
+    color: var(--color-aqua);
+  }
+
+  /* --- phone --- */
+  .sr-exchange-phone {
+    position: relative;
+    width: min(268px, 78%);
+    margin-inline: auto;
+  }
+  .sr-exchange-halo {
+    position: absolute;
+    inset: -12% -20%;
+    border-radius: 999px;
+    filter: blur(60px);
+    background: radial-gradient(circle, rgb(79 91 245 / 0.3), transparent 70%);
+    z-index: -1;
+  }
+
+  /* --- triad --- */
+  .sr-triad {
+    list-style: none;
+    margin: clamp(3.5rem, 8vw, 5.5rem) 0 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    counter-reset: triad;
+  }
+  @media (min-width: 760px) {
+    .sr-triad {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .sr-triad-item {
+    position: relative;
+    padding-top: 1.4rem;
+    border-top: 1px solid rgb(10 16 32 / 0.1);
+  }
+  .sr-triad-item::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 42px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-brand), var(--color-teal));
+  }
+  .sr-triad-key {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    margin-bottom: 0.5rem;
+  }
+  .sr-triad-item p {
+    margin: 0;
+    max-width: 32ch;
+  }
+</style>

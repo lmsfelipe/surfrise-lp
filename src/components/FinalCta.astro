@@ -1,0 +1,129 @@
+---
+import WaveDivider from "./WaveDivider.astro";
+import { site } from "../data/site";
+---
+
+<div class="sr-finalwave">
+  <WaveDivider fill="#050a16" height={130} />
+</div>
+
+<section id="comecar" class="sr-section sr-dark sr-final sr-grain">
+  <div class="sr-final-aurora" aria-hidden="true">
+    <span class="sr-final-band sr-final-band--a"></span>
+    <span class="sr-final-band sr-final-band--b"></span>
+    <span class="sr-final-band sr-final-band--c"></span>
+  </div>
+
+  <div class="sr-container sr-final-inner">
+    <h2 class="sr-h2 sr-final-title" data-reveal>
+      Pare de só surfar.
+      <span class="sr-final-em">Comece a entender seu surf.</span>
+    </h2>
+
+    <p class="sr-lead sr-final-lead" data-reveal style="--reveal-delay:120ms">
+      Analise sua próxima sessão gratuitamente e descubra o que trabalhar para evoluir.
+    </p>
+
+    <div class="sr-final-actions" data-reveal style="--reveal-delay:200ms">
+      <a href={site.ctaUrl} class="sr-btn sr-btn-primary sr-final-cta" data-gtag="cta_click:final">
+        Quero analisar meu surf grátis
+        <span class="sr-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <p class="sr-final-micro" data-reveal style="--reveal-delay:280ms">
+      Grátis até {site.betaUntil} · sem cartão · funciona no navegador
+    </p>
+  </div>
+</section>
+
+<style>
+  .sr-finalwave {
+    position: relative;
+    z-index: 3;
+    background: var(--color-foam);
+    margin-bottom: -1px;
+  }
+
+  .sr-final {
+    position: relative;
+    background: #050a16;
+    padding-block: clamp(6rem, 15vw, 11rem);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .sr-final-aurora {
+    position: absolute;
+    inset: -20% -10%;
+    z-index: 0;
+    filter: blur(70px);
+    opacity: 0.85;
+  }
+  .sr-final-band {
+    position: absolute;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+  }
+  .sr-final-band--a {
+    inset-block-start: 18%;
+    inset-inline-start: 8%;
+    width: 46vw;
+    height: 34vw;
+    background: radial-gradient(circle, rgb(79 91 245 / 0.55), transparent 66%);
+    animation: sr-drift 24s var(--ease-swell) infinite;
+  }
+  .sr-final-band--b {
+    inset-block-start: 34%;
+    inset-inline-end: 6%;
+    width: 40vw;
+    height: 32vw;
+    background: radial-gradient(circle, rgb(122 54 163 / 0.5), transparent 66%);
+    animation: sr-drift 31s var(--ease-swell) infinite reverse;
+  }
+  .sr-final-band--c {
+    inset-block-end: 6%;
+    inset-inline-start: 32%;
+    width: 34vw;
+    height: 26vw;
+    background: radial-gradient(circle, rgb(53 208 232 / 0.34), transparent 68%);
+    animation: sr-drift 19s var(--ease-swell) infinite;
+  }
+
+  .sr-final-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 52rem;
+  }
+
+  .sr-final-title {
+    margin: 0;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+  }
+  .sr-final-em {
+    display: block;
+    background: linear-gradient(100deg, #ffffff, #c6cdff 48%, var(--color-aqua));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sr-final-lead {
+    margin: clamp(1.25rem, 3vw, 1.75rem) auto 0;
+    max-width: 44ch;
+  }
+
+  .sr-final-actions {
+    margin-top: clamp(2rem, 4vw, 2.75rem);
+  }
+  .sr-final-cta {
+    font-size: 1.0625rem;
+    padding: 1.2rem 2.1rem;
+  }
+
+  .sr-final-micro {
+    margin: 1.25rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--fg-faint);
+  }
+</style>

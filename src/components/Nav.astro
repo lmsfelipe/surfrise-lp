@@ -1,0 +1,157 @@
+---
+import Logo from "./Logo.astro";
+
+const links = [
+  { href: "#como-funciona", label: "Como funciona" },
+  { href: "#a-analise", label: "A análise" },
+  { href: "#treino", label: "Treino" },
+  { href: "#perguntas", label: "Perguntas" },
+];
+---
+
+<header id="sr-nav" class="sr-nav">
+  <nav class="sr-nav-pill" aria-label="Principal">
+    <a href="#topo" class="sr-nav-brand" aria-label="SurfRise — início">
+      <Logo size={32} />
+    </a>
+
+    <ul class="sr-nav-links">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} data-gtag={`nav_click:${l.href.replace("#", "")}`}>{l.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a href="#acesso" class="sr-btn sr-btn-primary sr-nav-cta" data-gtag="cta_click:nav">
+      Analisar meu surf
+      <span class="sr-arrow" aria-hidden="true">→</span>
+    </a>
+  </nav>
+</header>
+
+<style>
+  .sr-nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    padding: clamp(0.65rem, 1.6vw, 1.15rem) clamp(0.75rem, 4vw, 2rem);
+    pointer-events: none;
+    transition: padding 0.6s var(--ease-fluid);
+  }
+
+  .sr-nav-pill {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    width: 100%;
+    max-width: 1100px;
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+    border-radius: 9999px;
+    color: #fff;
+    border: 1px solid transparent;
+    background: transparent;
+    transition:
+      background-color 0.6s var(--ease-fluid),
+      border-color 0.6s var(--ease-fluid),
+      box-shadow 0.6s var(--ease-fluid),
+      backdrop-filter 0.6s var(--ease-fluid);
+  }
+
+  :global(#sr-nav.is-stuck) .sr-nav-pill {
+    background: rgb(8 12 26 / 0.72);
+    border-color: rgb(255 255 255 / 0.09);
+    backdrop-filter: blur(18px) saturate(140%);
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.06) inset,
+      0 18px 44px -22px rgb(4 7 15 / 0.9);
+  }
+
+  .sr-nav-brand {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    flex: none;
+  }
+
+  /* 32px no hero, 24px assim que a pílula gruda no topo (mesmo gatilho que
+     dá o fundo escuro a ela). A altura vence a --logo-size inline do Logo por
+     especificidade (o #sr-nav entra na conta), não por !important. */
+  .sr-nav-brand :global(.sr-logo) {
+    transition: height 0.5s var(--ease-fluid);
+  }
+  :global(#sr-nav.is-stuck) .sr-nav-brand :global(.sr-logo) {
+    height: 24px;
+  }
+
+  .sr-nav-links {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: clamp(1rem, 2.2vw, 2rem);
+    margin-inline-start: auto;
+  }
+
+  .sr-nav-links a {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgb(226 236 255 / 0.72);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+  .sr-nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1.5px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-aqua), var(--color-brand));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-fluid);
+  }
+  .sr-nav-links a:hover {
+    color: #fff;
+  }
+  .sr-nav-links a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .sr-nav-cta {
+    margin-inline-start: auto;
+    padding: 0.7rem 1.15rem;
+    font-size: 0.8125rem;
+    flex: none;
+  }
+
+  @media (min-width: 900px) {
+    .sr-nav-links {
+      display: flex;
+    }
+    .sr-nav-cta {
+      margin-inline-start: 0;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .sr-nav-cta {
+      padding: 0.65rem 0.95rem;
+    }
+    .sr-nav-cta :global(.sr-arrow) {
+      display: none;
+    }
+  }
+</style>

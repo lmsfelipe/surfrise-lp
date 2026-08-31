@@ -1,0 +1,256 @@
+---
+import { site } from "../data/site";
+
+const perks = [
+  "Análise completa da sessão",
+  "Plano de treino gerado pra você",
+  "Histórico ilimitado de sessões",
+  "Sem cartão de crédito",
+];
+---
+
+<section id="acesso" class="sr-section sr-dark sr-curtain sr-access">
+  <div class="sr-glow sr-drift sr-access-glow-a" aria-hidden="true"></div>
+  <div class="sr-glow sr-drift-slow sr-access-glow-b" aria-hidden="true"></div>
+
+  <div class="sr-container sr-access-inner">
+    <div class="sr-access-copy">
+      <p class="sr-eyebrow" data-reveal>08 · Acesso</p>
+      <h2 class="sr-h2 sr-access-title" data-reveal style="--reveal-delay:90ms">
+        Os primeiros surfistas
+        <span class="sr-access-em">entram de graça.</span>
+      </h2>
+      <p class="sr-lead sr-access-lead" data-reveal style="--reveal-delay:170ms">
+        Estamos abrindo o SurfRise para os primeiros surfistas testarem a plataforma, analisarem
+        suas sessões e ajudarem a definir o futuro do produto.
+      </p>
+      <p class="sr-body sr-access-body" data-reveal style="--reveal-delay:230ms">
+        Você não paga nada e não precisa cadastrar cartão. Quem entrar durante o beta recebe uma
+        condição especial quando o plano pago for lançado.
+      </p>
+    </div>
+
+    <div class="sr-beta-wrap" data-reveal="scale" style="--reveal-delay:140ms">
+      <div class="sr-beta">
+        <div class="sr-beta-inner">
+          <p class="sr-badge sr-beta-badge">
+            <span class="sr-badge-dot" aria-hidden="true"></span>
+            Beta aberto
+          </p>
+
+          <div class="sr-beta-price">
+            <span class="sr-beta-free">Grátis</span>
+            <span class="sr-beta-until">até {site.betaUntil}</span>
+          </div>
+
+          <ul class="sr-beta-list">
+            {
+              perks.map((p) => (
+                <li>
+                  <span class="sr-beta-check" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M4 12.5l5.2 5.2L20 7"
+                        stroke="currentColor"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  {p}
+                </li>
+              ))
+            }
+          </ul>
+
+          <a href={site.ctaUrl} class="sr-btn sr-btn-primary sr-beta-cta" data-gtag="cta_click:access">
+            Quero analisar meu surf
+            <span class="sr-arrow" aria-hidden="true">→</span>
+          </a>
+
+          <p class="sr-beta-fine">
+            Depois vira plano pago. Quem entrar agora é avisado antes e mantém condição especial.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @property --sr-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .sr-access {
+    position: relative;
+    background:
+      radial-gradient(70% 55% at 78% 30%, rgb(79 91 245 / 0.22), transparent 62%),
+      linear-gradient(180deg, var(--color-navy), var(--color-abyss) 70%);
+    padding-block: clamp(6rem, 13vw, 10rem);
+    overflow: clip;
+  }
+  .sr-access-glow-a {
+    inset-block-start: 4%;
+    inset-inline-end: 6%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgb(79 91 245 / 0.42), transparent 66%);
+  }
+  .sr-access-glow-b {
+    inset-block-end: -10%;
+    inset-inline-start: -8%;
+    width: 32vw;
+    height: 32vw;
+    background: radial-gradient(circle, rgb(53 208 232 / 0.18), transparent 68%);
+  }
+
+  .sr-access-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: clamp(3rem, 7vw, 4.5rem);
+    align-items: center;
+  }
+  @media (min-width: 940px) {
+    .sr-access-inner {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+  }
+
+  .sr-access-title {
+    margin: 1.1rem 0 0;
+    max-width: 14ch;
+  }
+  .sr-access-em {
+    display: block;
+    background: linear-gradient(100deg, #ffffff, #b9c4ff 45%, var(--color-aqua));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sr-access-lead {
+    margin: 1.5rem 0 0;
+    max-width: 42ch;
+  }
+  .sr-access-body {
+    margin: 1.1rem 0 0;
+    max-width: 44ch;
+  }
+
+  /* --- the beta card --- */
+  .sr-beta-wrap {
+    perspective: 1200px;
+  }
+  .sr-beta {
+    position: relative;
+    padding: 1px;
+    border-radius: 30px;
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.18), rgb(255 255 255 / 0.04));
+    box-shadow:
+      0 50px 100px -40px rgb(4 7 15 / 0.95),
+      0 0 90px -30px rgb(79 91 245 / 0.7);
+    overflow: hidden;
+  }
+  .sr-beta::before {
+    content: "";
+    position: absolute;
+    inset: -60%;
+    background: conic-gradient(
+      from var(--sr-angle),
+      transparent 0deg 190deg,
+      var(--color-aqua) 250deg,
+      var(--color-brand-bright) 290deg,
+      transparent 330deg
+    );
+    animation: sr-spin 7s linear infinite;
+    opacity: 0.85;
+  }
+  @keyframes sr-spin {
+    to {
+      --sr-angle: 360deg;
+    }
+  }
+
+  .sr-beta-inner {
+    position: relative;
+    z-index: 2;
+    border-radius: 29px;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    background:
+      radial-gradient(120% 90% at 0% 0%, rgb(122 54 163 / 0.32), transparent 60%),
+      linear-gradient(165deg, #101833, #080d1c 65%);
+  }
+
+  .sr-beta-badge {
+    margin: 0;
+  }
+
+  .sr-beta-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+  }
+  .sr-beta-free {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 4rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    background: linear-gradient(100deg, #ffffff, #c6cdff 55%, var(--color-aqua));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sr-beta-until {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--fg-muted);
+  }
+
+  .sr-beta-list {
+    list-style: none;
+    margin: 1.9rem 0 0;
+    padding: 1.6rem 0 0;
+    border-top: 1px solid rgb(255 255 255 / 0.09);
+    display: grid;
+    gap: 0.9rem;
+  }
+  .sr-beta-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9375rem;
+    color: rgb(226 236 255 / 0.86);
+  }
+  .sr-beta-check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    color: #071021;
+    background: linear-gradient(140deg, var(--color-aqua), var(--color-teal));
+  }
+
+  .sr-beta-cta {
+    display: flex;
+    width: 100%;
+    margin-top: 1.9rem;
+  }
+
+  .sr-beta-fine {
+    margin: 1.15rem 0 0;
+    font-size: 0.78125rem;
+    line-height: 1.6;
+    color: rgb(220 232 255 / 0.56);
+    text-align: center;
+  }
+</style>
