@@ -9,8 +9,8 @@ const steps = [
     n: "1",
     title: "Registre sua sessão",
     text: "Onde, quando e como estava o mar.",
-    img: "/prints/01-home.webp",
-    alt: "Tela inicial do SurfRise com a lista de sessões registradas e suas notas.",
+    img: "/prints/07-nova-sessao.webp",
+    alt: "Tela de nova sessão no SurfRise com pico, data, tamanho da onda e prancha usada.",
   },
   {
     n: "2",
