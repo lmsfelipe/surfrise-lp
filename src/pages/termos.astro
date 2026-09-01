@@ -1,0 +1,102 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+
+const updated = "1 de setembro de 2026";
+---
+
+<Base
+  title="Termos de Uso — SurfRise"
+  description="Termos de uso do SurfRise durante o período de beta gratuito."
+>
+  <Nav minimal />
+
+  <main id="conteudo">
+    <section class="sr-section sr-light sr-legal">
+      <div class="sr-container sr-legal-inner">
+        <p class="sr-eyebrow" data-reveal>Legal</p>
+        <h1 class="sr-h2" data-reveal style="--reveal-delay:80ms">Termos de Uso</h1>
+        <p class="sr-legal-updated" data-reveal style="--reveal-delay:140ms">
+          Última atualização: {updated}
+        </p>
+
+        <div class="sr-prose" data-reveal style="--reveal-delay:200ms">
+          <p>
+            Estes Termos de Uso regem o acesso e a utilização do <strong>SurfRise</strong> durante o
+            período de beta gratuito. Ao criar uma conta ou usar a plataforma, você declara que leu e
+            concorda com estes termos.
+          </p>
+
+          <h2>O que é o SurfRise</h2>
+          <p>
+            O SurfRise é uma plataforma que analisa fotos e vídeos das suas sessões de surf e gera
+            uma avaliação por aspectos, um diagnóstico e um plano de treino. As análises são geradas
+            com apoio de inteligência artificial e têm caráter informativo e educativo.
+          </p>
+
+          <h2>Beta gratuito</h2>
+          <p>
+            Durante o beta, o acesso é <strong>gratuito e sem necessidade de cartão de crédito</strong>.
+            A plataforma está em desenvolvimento: recursos podem mudar, ser adicionados ou removidos, e
+            eventuais instabilidades podem ocorrer. Quem participar do beta poderá receber uma condição
+            especial quando o plano pago for lançado, a critério do SurfRise.
+          </p>
+
+          <h2>Uso adequado</h2>
+          <ul>
+            <li>Você é responsável por manter a segurança da sua conta e das suas credenciais;</li>
+            <li>Você concorda em não usar a plataforma para fins ilícitos ou que violem direitos de terceiros;</li>
+            <li>Você deve enviar apenas conteúdo sobre o qual tenha os direitos necessários.</li>
+          </ul>
+
+          <h2>Conteúdo que você envia</h2>
+          <p>
+            As fotos, vídeos e informações que você envia continuam sendo seus. Você nos concede
+            permissão para processá-los com o único objetivo de gerar a sua análise e o seu plano de
+            treino, e de operar e melhorar a plataforma. O tratamento desses dados segue a nossa
+            <a href="/privacidade">Política de Privacidade</a>.
+          </p>
+
+          <h2>Isenção de responsabilidade</h2>
+          <p>
+            <strong>A análise do SurfRise não substitui a avaliação de um profissional.</strong> Os
+            planos de treino têm caráter geral; antes de iniciar qualquer atividade física, procure a
+            orientação de um profissional de educação física ou de saúde, sobretudo em caso de lesões
+            ou condições preexistentes. Você é o único responsável pela decisão de seguir as sugestões
+            apresentadas.
+          </p>
+
+          <h2>Limitação de responsabilidade</h2>
+          <p>
+            Durante o beta, a plataforma é fornecida "no estado em que se encontra", sem garantias de
+            disponibilidade ininterrupta ou de resultados específicos. Na máxima extensão permitida
+            pela lei, o SurfRise não se responsabiliza por danos decorrentes do uso ou da
+            impossibilidade de uso da plataforma.
+          </p>
+
+          <h2>Alterações destes termos</h2>
+          <p>
+            Podemos atualizar estes Termos periodicamente. A data de "última atualização" no topo
+            indica a versão vigente. O uso continuado após mudanças significa concordância com a nova
+            versão.
+          </p>
+
+          <h2>Contato</h2>
+          <p>
+            Dúvidas sobre estes Termos? Escreva para
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+          </p>
+
+          <hr class="sr-prose-hr" />
+          <p>
+            <a href="/">← Voltar para a página inicial</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

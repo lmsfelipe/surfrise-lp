@@ -505,7 +505,7 @@ export default function HeroCanvas() {
     <div
       ref={hostRef}
       aria-hidden="true"
-      className="absolute inset-0 z-[1]"
+      className="sr-hero-canvas absolute inset-0 z-[1]"
       style={{ opacity: 0, transition: "opacity 900ms cubic-bezier(0.22,1,0.36,1)" }}
     />
   );

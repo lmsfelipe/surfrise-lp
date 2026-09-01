@@ -14,7 +14,7 @@ const {
     "Envie fotos ou vídeo da sua sessão e receba uma análise completa do seu surf: notas por aspecto, pontos fortes, pontos fracos e um treino criado para você.",
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.app");
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.com.br");
 ---
 
 <!doctype html>
@@ -38,23 +38,32 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.ap
          resto da página junta. Baixá-lo no <head> fazia ele disputar banda com
          a hero. A fila do dataLayer é montada aqui e o script vem depois do
          load: comandos e cliques anteriores ficam na fila e são reproduzidos
-         quando a lib chega, então nada de medição se perde. -->
+         quando a lib chega, então nada de medição se perde.
+
+         LGPD: nada de GA sem consentimento. `srInitGa` fica pronta mas só roda
+         quando o consentimento é "granted" — na carga, se já houver escolha
+         salva, e no clique em "Aceitar" (ver o banner no fim do body). -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
-      gtag("js", new Date());
-      gtag("config", "G-3VGRQB78MF");
-
-      var srLoadGa = function () {
+      window.srInitGa = function () {
+        if (window.__srGaInit) return;
+        window.__srGaInit = true;
+        gtag("js", new Date());
+        gtag("config", "G-3VGRQB78MF");
         var s = document.createElement("script");
         s.async = true;
         s.src = "https://www.googletagmanager.com/gtag/js?id=G-3VGRQB78MF";
         document.head.appendChild(s);
       };
-      if (document.readyState === "complete") srLoadGa();
-      else window.addEventListener("load", srLoadGa, { once: true });
+      try {
+        if (localStorage.getItem("sr-consent") === "granted") {
+          if (document.readyState === "complete") window.srInitGa();
+          else window.addEventListener("load", window.srInitGa, { once: true });
+        }
+      } catch (e) {}
     </script>
 
     <meta property="og:type" content="website" />
@@ -63,7 +72,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.ap
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL("/og.jpg", Astro.site ?? "https://surfrise.app")} />
+    <meta property="og:image" content={new URL("/og.jpg", Astro.site ?? "https://surfrise.com.br")} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="SurfRise — Surfe. Analise. Evolua." />
@@ -83,10 +92,58 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.ap
 
     <slot />
 
+    <div
+      id="sr-consent"
+      class="sr-consent"
+      role="dialog"
+      aria-label="Aviso de cookies"
+      aria-live="polite"
+      hidden
+    >
+      <p class="sr-consent-text">
+        Usamos cookies de análise para entender como a página é usada e melhorá-la. Você pode aceitar
+        ou recusar — veja a <a href="/privacidade">Política de Privacidade</a>.
+      </p>
+      <div class="sr-consent-actions">
+        <button type="button" class="sr-btn sr-btn-ghost sr-consent-btn" data-consent="denied">
+          Recusar
+        </button>
+        <button type="button" class="sr-btn sr-btn-primary sr-consent-btn" data-consent="granted">
+          Aceitar
+        </button>
+      </div>
+    </div>
+
     <script>
       import Lenis from "lenis";
 
       const reduced = document.documentElement.classList.contains("no-motion");
+
+      /* ---------- Cookie consent (LGPD) — gates Google Analytics ---------- */
+      const srInitGa = (window as unknown as { srInitGa?: () => void }).srInitGa;
+      const consentEl = document.getElementById("sr-consent");
+      if (consentEl) {
+        let stored: string | null = null;
+        try {
+          stored = localStorage.getItem("sr-consent");
+        } catch {}
+        if (!stored) {
+          consentEl.hidden = false;
+          // rAF so the entrance transition runs after `hidden` is cleared.
+          requestAnimationFrame(() => consentEl.classList.add("is-in"));
+        }
+        consentEl.addEventListener("click", (e) => {
+          const btn = (e.target as HTMLElement)?.closest<HTMLElement>("[data-consent]");
+          if (!btn) return;
+          const choice = btn.dataset.consent;
+          try {
+            if (choice) localStorage.setItem("sr-consent", choice);
+          } catch {}
+          consentEl.classList.remove("is-in");
+          consentEl.hidden = true;
+          if (choice === "granted") srInitGa?.();
+        });
+      }
 
       /* ---------- Smooth, weighted scroll (the "swell") ---------- */
       if (!reduced && window.matchMedia("(min-width: 768px)").matches) {
@@ -156,7 +213,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.ap
       const update = () => {
         ticking = false;
         const y = window.scrollY;
-        if (nav) nav.classList.toggle("is-stuck", y > 24);
+        // Nav enxuta (páginas legais) já nasce sólida e não deve destravar.
+        if (nav && !nav.hasAttribute("data-solid")) nav.classList.toggle("is-stuck", y > 24);
         if (progress) {
           const max = document.documentElement.scrollHeight - window.innerHeight;
           progress.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;

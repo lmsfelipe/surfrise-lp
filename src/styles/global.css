@@ -1197,3 +1197,125 @@ html.no-motion [data-reveal] {
   pointer-events: none;
   will-change: transform;
 }
+
+/* ------------------------------------------------------------------ *
+ * COOKIE CONSENT — banner que libera o Google Analytics (LGPD)
+ * ------------------------------------------------------------------ */
+.sr-consent {
+  position: fixed;
+  inset-inline: clamp(0.75rem, 3vw, 1.5rem);
+  bottom: clamp(0.75rem, 3vw, 1.5rem);
+  z-index: 200;
+  margin-inline: auto;
+  max-width: 660px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  padding: 1rem 1.15rem;
+  border-radius: 18px;
+  color: #fff;
+  background: rgb(8 12 26 / 0.92);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 18px 44px -18px rgb(4 7 15 / 0.9);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.45s var(--ease-fluid),
+    transform 0.45s var(--ease-fluid);
+}
+.sr-consent.is-in {
+  opacity: 1;
+  transform: none;
+}
+.sr-consent-text {
+  flex: 1 1 260px;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(220 232 255 / 0.78);
+}
+.sr-consent-text a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sr-consent-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex: 0 0 auto;
+}
+.sr-consent-btn {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------------ *
+ * LEGAL / PROSE PAGES — /privacidade, /termos
+ * Um único bloco de texto corrido; o topo folga o nav fixo.
+ * ------------------------------------------------------------------ */
+.sr-legal {
+  /* .sr-light só troca os tokens de texto; o fundo claro é por conta da seção,
+     como nas demais seções claras da página. */
+  background: var(--color-foam);
+  padding-block: clamp(7rem, 12vw, 9.5rem) clamp(4rem, 8vw, 6rem);
+}
+.sr-legal-inner {
+  max-width: 720px;
+}
+.sr-legal-updated {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--fg-faint);
+}
+.sr-prose {
+  margin-top: clamp(2.25rem, 4vw, 3rem);
+}
+.sr-prose > * + * {
+  margin-top: 1.1rem;
+}
+.sr-prose h2 {
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: clamp(2.5rem, 4.5vw, 3.25rem);
+}
+.sr-prose > h2:first-child {
+  margin-top: 0;
+}
+.sr-prose h3 {
+  font-size: 1.1rem;
+  line-height: 1.3;
+  margin-top: 1.85rem;
+}
+.sr-prose p,
+.sr-prose li {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--fg-muted);
+  text-wrap: pretty;
+}
+.sr-prose ul {
+  margin-block: 0.5rem;
+  padding-left: 1.3rem;
+  list-style: disc;
+}
+.sr-prose li {
+  margin-top: 0.45rem;
+}
+.sr-prose a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sr-prose strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.sr-prose-hr {
+  height: 1px;
+  border: 0;
+  background: var(--hairline);
+  margin-block: clamp(2.25rem, 4vw, 3.25rem);
+}

@@ -100,6 +100,25 @@ const words = ["Surfe.", "Analise.", "Evolua."];
     .sr-hero-poster {
       background-image: url("/hero-wide.webp");
     }
+
+    /*
+     * Um blur bem leve nas camadas de fundo. Sem ele o brilho especular das
+     * ondas tem borda de faca e a água lê como CG; 2px come justamente esse
+     * recorte sem apagar a forma da onda (2,5px já começa a virar névoa e
+     * 3px vira borrão).
+     *
+     * Só no desktop: é lá que a água aparece grande e que o shader roda. O
+     * céu e o horizonte não perdem nada — já são gradiente e névoa.
+     *
+     * O scale existe porque filter: blur() sangra para fora do elemento e
+     * deixa as beiradas semitransparentes; sem ele apareceria uma moldura
+     * escura em volta do hero, que tem overflow: hidden.
+     */
+    .sr-hero-poster,
+    .sr-hero :global(.sr-hero-canvas) {
+      filter: blur(var(--hero-blur, 2px));
+      transform: scale(1.02);
+    }
   }
 
   .sr-hero-veil {

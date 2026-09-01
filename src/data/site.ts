@@ -1,6 +1,5 @@
 /**
  * Único lugar para ajustar links e datas da campanha.
- * TODO: confirmar a URL do app e a data de encerramento do beta.
  */
 export const site = {
   /** Destino real do botão "Quero analisar meu surf". */

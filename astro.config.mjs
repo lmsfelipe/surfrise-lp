@@ -1,11 +1,12 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://surfrise.app',
-  integrations: [react()],
+  site: 'https://surfrise.com.br',
+  integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
     build: {

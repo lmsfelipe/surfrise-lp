@@ -1,0 +1,130 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+
+const updated = "1 de setembro de 2026";
+---
+
+<Base
+  title="Política de Privacidade — SurfRise"
+  description="Como o SurfRise coleta, usa e protege seus dados, em conformidade com a LGPD."
+>
+  <Nav minimal />
+
+  <main id="conteudo">
+    <section class="sr-section sr-light sr-legal">
+      <div class="sr-container sr-legal-inner">
+        <p class="sr-eyebrow" data-reveal>Legal</p>
+        <h1 class="sr-h2" data-reveal style="--reveal-delay:80ms">Política de Privacidade</h1>
+        <p class="sr-legal-updated" data-reveal style="--reveal-delay:140ms">
+          Última atualização: {updated}
+        </p>
+
+        <div class="sr-prose" data-reveal style="--reveal-delay:200ms">
+          <p>
+            Esta Política de Privacidade explica como o <strong>SurfRise</strong> trata os dados
+            pessoais de quem visita esta landing page, em conformidade com a Lei Geral de Proteção
+            de Dados (Lei nº 13.709/2018 — LGPD). Ao navegar por esta página, você concorda com as
+            práticas descritas abaixo.
+          </p>
+
+          <h2>Quem é o controlador</h2>
+          <p>
+            O SurfRise é o controlador dos dados tratados nesta página. Para qualquer questão sobre
+            privacidade ou para exercer seus direitos, entre em contato pelo e-mail
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+          </p>
+
+          <h2>Quais dados coletamos</h2>
+          <p>Nesta landing page, coletamos apenas o mínimo necessário:</p>
+          <ul>
+            <li>
+              <strong>Dados de navegação e uso</strong>, de forma agregada, por meio do Google
+              Analytics — por exemplo: páginas visitadas, tempo de permanência, cliques nos botões,
+              tipo de dispositivo, navegador e origem aproximada do acesso.
+            </li>
+            <li>
+              <strong>Dados de contato</strong> que você nos envie voluntariamente, caso escreva
+              para o nosso e-mail (como o próprio endereço de e-mail e o conteúdo da mensagem).
+            </li>
+          </ul>
+          <p>
+            Esta página <strong>não possui formulários de cadastro</strong> e não solicita dados
+            sensíveis. A criação de conta e o envio de fotos ou vídeos acontecem apenas dentro do
+            aplicativo, em <a href={site.ctaUrl} rel="noopener">{site.ctaUrl}</a>, que possui
+            tratamento próprio de dados.
+          </p>
+
+          <h2>Cookies e tecnologias semelhantes</h2>
+          <p>
+            Utilizamos cookies de análise (Google Analytics) para entender como a página é usada e
+            melhorá-la. Esses cookies só são ativados <strong>após o seu consentimento</strong>, dado
+            no aviso exibido ao acessar a página. Você pode recusar sem prejuízo à navegação, e pode
+            rever a sua escolha a qualquer momento limpando os dados do site no seu navegador.
+            Cookies estritamente necessários ao funcionamento da página podem ser usados
+            independentemente de consentimento.
+          </p>
+
+          <h2>Como usamos os dados</h2>
+          <ul>
+            <li>Medir e melhorar o desempenho e a usabilidade da página;</li>
+            <li>Entender o interesse pela plataforma e a eficácia das nossas campanhas;</li>
+            <li>Responder às mensagens que você nos enviar.</li>
+          </ul>
+
+          <h2>Base legal</h2>
+          <p>
+            O tratamento de dados de análise se baseia no <strong>seu consentimento</strong> (art. 7º,
+            I, da LGPD). O tratamento de mensagens de contato se baseia no consentimento e no legítimo
+            interesse de responder à sua solicitação.
+          </p>
+
+          <h2>Compartilhamento de dados</h2>
+          <p>
+            Não vendemos seus dados. Compartilhamos dados de navegação com o
+            <strong> Google</strong>, na qualidade de operador do Google Analytics, exclusivamente
+            para as finalidades acima. O Google pode tratar esses dados conforme as suas próprias
+            políticas.
+          </p>
+
+          <h2>Seus direitos</h2>
+          <p>
+            Nos termos do art. 18 da LGPD, você pode solicitar a qualquer momento: confirmação da
+            existência de tratamento; acesso aos dados; correção de dados incompletos ou desatualizados;
+            anonimização, bloqueio ou eliminação de dados desnecessários; portabilidade; informação
+            sobre compartilhamento; e revogação do consentimento. Para exercê-los, escreva para
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+          </p>
+
+          <h2>Retenção e segurança</h2>
+          <p>
+            Mantemos os dados apenas pelo tempo necessário às finalidades descritas ou conforme exigido
+            por lei. Adotamos medidas técnicas e organizacionais razoáveis para proteger seus dados
+            contra acesso não autorizado, perda ou alteração.
+          </p>
+
+          <h2>Alterações desta política</h2>
+          <p>
+            Podemos atualizar esta Política periodicamente. A data de "última atualização" no topo
+            indica a versão vigente. Mudanças relevantes serão sinalizadas nesta página.
+          </p>
+
+          <h2>Contato</h2>
+          <p>
+            Dúvidas sobre esta Política ou sobre o tratamento dos seus dados? Escreva para
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+          </p>
+
+          <hr class="sr-prose-hr" />
+          <p>
+            <a href="/">← Voltar para a página inicial</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

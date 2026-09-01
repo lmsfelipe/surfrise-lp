@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://surfrise.com.br/sitemap-index.xml

@@ -1,5 +1,16 @@
 ---
 import Logo from "./Logo.astro";
+import { site } from "../data/site";
+
+interface Props {
+  /**
+   * Nav enxuta para páginas fora da home (legais): sem os links de âncora
+   * (que não existem lá), a marca volta pra "/", o CTA vai direto pro app e a
+   * pílula já nasce sólida — sobre fundo claro a versão transparente some.
+   */
+  minimal?: boolean;
+}
+const { minimal = false } = Astro.props;
 
 const links = [
   { href: "#como-funciona", label: "Como funciona" },
@@ -9,23 +20,35 @@ const links = [
 ];
 ---
 
-<header id="sr-nav" class="sr-nav">
+<header
+  id="sr-nav"
+  class:list={["sr-nav", { "sr-nav--minimal": minimal, "is-stuck": minimal }]}
+  data-solid={minimal ? "" : undefined}
+>
   <nav class="sr-nav-pill" aria-label="Principal">
-    <a href="#topo" class="sr-nav-brand" aria-label="SurfRise — início">
+    <a href={minimal ? "/" : "#topo"} class="sr-nav-brand" aria-label="SurfRise — início">
       <Logo size={32} />
     </a>
 
-    <ul class="sr-nav-links">
-      {
-        links.map((l) => (
-          <li>
-            <a href={l.href} data-gtag={`nav_click:${l.href.replace("#", "")}`}>{l.label}</a>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      !minimal && (
+        <ul class="sr-nav-links">
+          {links.map((l) => (
+            <li>
+              <a href={l.href} data-gtag={`nav_click:${l.href.replace("#", "")}`}>
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
 
-    <a href="#acesso" class="sr-btn sr-btn-primary sr-nav-cta" data-gtag="cta_click:nav">
+    <a
+      href={minimal ? site.ctaUrl : "#acesso"}
+      class="sr-btn sr-btn-primary sr-nav-cta"
+      data-gtag="cta_click:nav"
+    >
       Analisar meu surf
       <span class="sr-arrow" aria-hidden="true">→</span>
     </a>
@@ -135,6 +158,12 @@ const links = [
     padding: 0.7rem 1.15rem;
     font-size: 0.8125rem;
     flex: none;
+  }
+
+  /* Sem os links de âncora, é o CTA que precisa segurar a borda direita — vence
+     o `margin-inline-start: 0` do breakpoint ≥900px por especificidade. */
+  .sr-nav--minimal .sr-nav-cta {
+    margin-inline-start: auto;
   }
 
   @media (min-width: 900px) {
