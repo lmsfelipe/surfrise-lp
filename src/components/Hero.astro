@@ -1,6 +1,7 @@
 ---
 import HeroCanvas from "./HeroCanvas.tsx";
 import HeroCard from "./HeroCard.tsx";
+import { site } from "../data/site";
 
 const words = ["Surfe.", "Analise.", "Evolua."];
 ---
@@ -29,7 +30,7 @@ const words = ["Surfe.", "Analise.", "Evolua."];
     <div class="sr-hero-copy">
       <p class="sr-badge sr-hero-badge">
         <span class="sr-badge-dot" aria-hidden="true"></span>
-        Beta aberto · grátis para os primeiros surfistas
+        Teste aberto · grátis para os primeiros surfistas
       </p>
 
       <h1 class="sr-h1 sr-hero-title">
@@ -54,7 +55,7 @@ const words = ["Surfe.", "Analise.", "Evolua."];
       </p>
 
       <div class="sr-hero-actions">
-        <a href="#acesso" class="sr-btn sr-btn-primary" data-gtag="cta_click:hero">
+        <a href={site.ctaUrl} class="sr-btn sr-btn-primary" data-gtag="cta_click:hero">
           Quero analisar meu surf grátis
           <span class="sr-arrow" aria-hidden="true">→</span>
         </a>

@@ -2,6 +2,7 @@
 import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource-variable/inter";
 import "../styles/global.css";
+import { site } from "../data/site";
 
 interface Props {
   title?: string;
@@ -15,6 +16,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.com.br");
+const metaPixelEnabled = site.metaPixelId !== "YOUR_PIXEL_ID";
 ---
 
 <!doctype html>
@@ -40,9 +42,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.co
          load: comandos e cliques anteriores ficam na fila e são reproduzidos
          quando a lib chega, então nada de medição se perde.
 
-         LGPD: nada de GA sem consentimento. `srInitGa` fica pronta mas só roda
-         quando o consentimento é "granted" — na carga, se já houver escolha
-         salva, e no clique em "Aceitar" (ver o banner no fim do body). -->
+         O aviso de cookies no fim do body é apenas informativo (sem opt-out) —
+         a medição roda sempre, independente do aviso ter sido fechado. -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -58,13 +59,55 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.co
         s.src = "https://www.googletagmanager.com/gtag/js?id=G-3VGRQB78MF";
         document.head.appendChild(s);
       };
-      try {
-        if (localStorage.getItem("sr-consent") === "granted") {
-          if (document.readyState === "complete") window.srInitGa();
-          else window.addEventListener("load", window.srInitGa, { once: true });
-        }
-      } catch (e) {}
+      if (document.readyState === "complete") window.srInitGa();
+      else window.addEventListener("load", window.srInitGa, { once: true });
     </script>
+
+    {
+      metaPixelEnabled && (
+        <Fragment>
+          {/* Meta Pixel — mesmo tratamento de "carrega depois do load" do gtag
+             acima: fbevents.js soma outro tanto de KB disputando banda com a
+             hero. PageView é disparado assim que o script chega; para uma LP
+             estática (sem client-side routing) isso já cobre uma visita por
+             carregamento de página, sem precisar refirar em SPA. */}
+          <script is:inline define:vars={{ pixelId: site.metaPixelId }}>
+            window.srInitPixel = function () {
+              if (window.__srPixelInit) return;
+              window.__srPixelInit = true;
+              !(function (f, b, e, v, n, t, s) {
+                if (f.fbq) return;
+                n = f.fbq = function () {
+                  n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+                };
+                if (!f._fbq) f._fbq = n;
+                n.push = n;
+                n.loaded = true;
+                n.version = "2.0";
+                n.queue = [];
+                t = b.createElement(e);
+                t.async = true;
+                t.src = v;
+                s = b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t, s);
+              })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+              fbq("init", pixelId);
+              fbq("track", "PageView");
+            };
+            if (document.readyState === "complete") window.srInitPixel();
+            else window.addEventListener("load", window.srInitPixel, { once: true });
+          </script>
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style="display:none"
+              src={`https://www.facebook.com/tr?id=${site.metaPixelId}&ev=PageView&noscript=1`}
+            />
+          </noscript>
+        </Fragment>
+      )
+    }
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="SurfRise" />
@@ -95,22 +138,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.co
     <div
       id="sr-consent"
       class="sr-consent"
-      role="dialog"
+      role="status"
       aria-label="Aviso de cookies"
       aria-live="polite"
       hidden
     >
       <p class="sr-consent-text">
-        Usamos cookies de análise para entender como a página é usada e melhorá-la. Você pode aceitar
-        ou recusar — veja a <a href="/privacidade">Política de Privacidade</a>.
+        Usamos cookies para entender como a página é usada e melhorá-la. Saiba mais na
+        <a href="/privacidade">Política de Privacidade</a>.
       </p>
       <div class="sr-consent-actions">
-        <button type="button" class="sr-btn sr-btn-ghost sr-consent-btn" data-consent="denied">
-          Recusar
-        </button>
-        <button type="button" class="sr-btn sr-btn-primary sr-consent-btn" data-consent="granted">
-          Aceitar
-        </button>
+        <button type="button" class="sr-btn sr-btn-primary sr-consent-btn" data-consent-ok>OK</button>
       </div>
     </div>
 
@@ -119,29 +157,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://surfrise.co
 
       const reduced = document.documentElement.classList.contains("no-motion");
 
-      /* ---------- Cookie consent (LGPD) — gates Google Analytics ---------- */
-      const srInitGa = (window as unknown as { srInitGa?: () => void }).srInitGa;
+      /* ---------- Cookie notice (informativo, sem opt-out) ---------- */
       const consentEl = document.getElementById("sr-consent");
       if (consentEl) {
-        let stored: string | null = null;
+        let seen: string | null = null;
         try {
-          stored = localStorage.getItem("sr-consent");
+          seen = localStorage.getItem("sr-consent-seen");
         } catch {}
-        if (!stored) {
+        if (!seen) {
           consentEl.hidden = false;
           // rAF so the entrance transition runs after `hidden` is cleared.
           requestAnimationFrame(() => consentEl.classList.add("is-in"));
         }
         consentEl.addEventListener("click", (e) => {
-          const btn = (e.target as HTMLElement)?.closest<HTMLElement>("[data-consent]");
+          const btn = (e.target as HTMLElement)?.closest<HTMLElement>("[data-consent-ok]");
           if (!btn) return;
-          const choice = btn.dataset.consent;
           try {
-            if (choice) localStorage.setItem("sr-consent", choice);
+            localStorage.setItem("sr-consent-seen", "1");
           } catch {}
           consentEl.classList.remove("is-in");
           consentEl.hidden = true;
-          if (choice === "granted") srInitGa?.();
         });
       }
 
