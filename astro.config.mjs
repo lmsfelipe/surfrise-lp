@@ -1,11 +1,11 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import sitemap from '@astrojs/sitemap';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "astro/config";
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: 'https://surfrise.com.br',
+  site: "https://surfrise.com.br",
   integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
@@ -16,5 +16,5 @@ export default defineConfig({
   },
   // Uma página só: o CSS inteiro cabe no HTML e economiza o round trip que
   // bloqueava a primeira pintura (o Lighthouse media ~885 ms nele).
-  build: { inlineStylesheets: 'always' },
+  build: { inlineStylesheets: "always" },
 });
