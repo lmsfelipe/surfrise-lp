@@ -1,3 +1,4 @@
+import { asset } from "../data/assets";
 import { PRINT_SIZES, printSrcSet } from "../data/prints";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -124,7 +125,7 @@ export default function HowItWorks() {
 
               {/* inline phone for narrow screens */}
               <div className="sr-how-phone-inline">
-                <Phone src={s.img} alt={s.alt} eager={i === 0} />
+                <Phone src={s.img} alt={s.alt} />
               </div>
             </div>
           </li>
@@ -142,7 +143,7 @@ export default function HowItWorks() {
                 <AnimatePresence mode="popLayout" initial={false}>
                   <motion.img
                     key={steps[active].img}
-                    src={steps[active].img}
+                    src={asset(steps[active].img)}
                     alt={steps[active].alt}
                     width={706}
                     height={1532}
@@ -171,19 +172,21 @@ export default function HowItWorks() {
   );
 }
 
-function Phone({ src, alt, eager }: { src: string; alt: string; eager?: boolean }) {
+function Phone({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="sr-phone">
       <div className="sr-phone-screen">
         <span className="sr-phone-notch" aria-hidden="true" />
+        {/* Lazy inclusive no 1º passo: a seção fica bem abaixo da hero, e o
+            eager fazia o celular baixar esse print junto com o pôster. */}
         <img
-          src={src}
+          src={asset(src)}
           srcSet={printSrcSet(src)}
           sizes={PRINT_SIZES}
           alt={alt}
           width={706}
           height={1532}
-          loading={eager ? "eager" : "lazy"}
+          loading="lazy"
           decoding="async"
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
         />

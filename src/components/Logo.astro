@@ -6,6 +6,8 @@
  * página (nav flutuante e rodapé). Se um dia ela precisar aparecer sobre claro,
  * isto vai precisar de uma segunda variante, não de um filtro de CSS.
  */
+import { asset } from "../data/assets";
+
 interface Props {
   /** Altura de exibição, em px. */
   size?: number;
@@ -20,7 +22,7 @@ const NATIVE_H = 127;
 
 <img
   class={`sr-logo ${className}`}
-  src="/brand/logo.webp"
+  src={asset("/brand/logo.webp")}
   width={NATIVE_W}
   height={NATIVE_H}
   alt="SurfRise"

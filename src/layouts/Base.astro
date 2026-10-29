@@ -2,6 +2,7 @@
 import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource-variable/inter";
 import "../styles/global.css";
+import { asset } from "../data/assets";
 import { site } from "../data/site";
 
 interface Props {
@@ -33,14 +34,14 @@ const metaPixelEnabled = site.metaPixelId !== "YOUR_PIXEL_ID";
 
     <!-- O pôster da hero é background-image (ver Hero.astro). O preload devolve
          a descoberta antecipada que o preload scanner dava na <img>. -->
-    <link rel="preload" as="image" href="/hero-tall.webp" media="(max-width: 999px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="/hero-wide.webp" media="(min-width: 1000px)" fetchpriority="high" />
+    <link rel="preload" as="image" href={asset("/hero-tall.webp")} media="(max-width: 999px)" fetchpriority="high" />
+    <link rel="preload" as="image" href={asset("/hero-wide.webp")} media="(min-width: 1000px)" fetchpriority="high" />
 
     <!-- Google tag (gtag.js) — o gtag.js sozinho é 170 kB, mais que todo o
          resto da página junta. Baixá-lo no <head> fazia ele disputar banda com
-         a hero. A fila do dataLayer é montada aqui e o script vem depois do
-         load: comandos e cliques anteriores ficam na fila e são reproduzidos
-         quando a lib chega, então nada de medição se perde.
+         a hero. A fila do dataLayer é montada aqui e o script só vem depois
+         (ver o agendador logo abaixo do Pixel): comandos e cliques anteriores
+         ficam na fila e são reproduzidos quando a lib chega.
 
          O aviso de cookies no fim do body é apenas informativo (sem opt-out) —
          a medição roda sempre, independente do aviso ter sido fechado. -->
@@ -59,16 +60,14 @@ const metaPixelEnabled = site.metaPixelId !== "YOUR_PIXEL_ID";
         s.src = "https://www.googletagmanager.com/gtag/js?id=G-3VGRQB78MF";
         document.head.appendChild(s);
       };
-      if (document.readyState === "complete") window.srInitGa();
-      else window.addEventListener("load", window.srInitGa, { once: true });
     </script>
 
     {
       metaPixelEnabled && (
         <Fragment>
-          {/* Meta Pixel — mesmo tratamento de "carrega depois do load" do gtag
-             acima: fbevents.js soma outro tanto de KB disputando banda com a
-             hero. PageView é disparado assim que o script chega; para uma LP
+          {/* Meta Pixel — mesmo agendamento do gtag acima: fbevents.js (mais
+             a config do pixel que ele busca) soma outro tanto de KB disputando
+             banda com a hero. PageView é disparado assim que o script chega; para uma LP
              estática (sem client-side routing) isso já cobre uma visita por
              carregamento de página, sem precisar refirar em SPA. */}
           <script is:inline define:vars={{ pixelId: site.metaPixelId }}>
@@ -94,8 +93,6 @@ const metaPixelEnabled = site.metaPixelId !== "YOUR_PIXEL_ID";
               fbq("init", pixelId);
               fbq("track", "PageView");
             };
-            if (document.readyState === "complete") window.srInitPixel();
-            else window.addEventListener("load", window.srInitPixel, { once: true });
           </script>
           <noscript>
             <img
@@ -108,6 +105,32 @@ const metaPixelEnabled = site.metaPixelId !== "YOUR_PIXEL_ID";
         </Fragment>
       )
     }
+
+    <!-- Agendador do GA4 e do Pixel: primeira interação (toque, rolagem, tecla)
+         ou 4 s depois do load, o que vier antes. Só esperar o load não bastava:
+         com o CSS inline o load dispara em ~70 ms, antes de a hero pintar, e os
+         ~450 kB de gtag + fbevents + config do Pixel caíam no caminho do LCP —
+         na simulação de celular do Lighthouse era o grosso dos 7,1 s. -->
+    <script is:inline>
+      (function () {
+        var events = ["pointerdown", "touchstart", "keydown", "wheel", "scroll"];
+        function start() {
+          events.forEach(function (e) {
+            window.removeEventListener(e, start, true);
+          });
+          window.srInitGa();
+          if (window.srInitPixel) window.srInitPixel();
+        }
+        events.forEach(function (e) {
+          window.addEventListener(e, start, { capture: true, passive: true });
+        });
+        function later() {
+          setTimeout(start, 4000);
+        }
+        if (document.readyState === "complete") later();
+        else window.addEventListener("load", later, { once: true });
+      })();
+    </script>
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="SurfRise" />

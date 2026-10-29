@@ -13,6 +13,7 @@ const triad = [
     t: "O treino transforma esse diagnóstico em algo que você pode trabalhar.",
   },
 ];
+import { asset } from "../data/assets";
 import { PRINT_SIZES, printSrcSet } from "../data/prints";
 ---
 
@@ -78,7 +79,7 @@ import { PRINT_SIZES, printSrcSet } from "../data/prints";
           <div class="sr-phone-screen">
             <span class="sr-phone-notch" aria-hidden="true"></span>
             <img
-              src="/prints/04-ia.webp"
+              src={asset("/prints/04-ia.webp")}
               srcset={printSrcSet("/prints/04-ia.webp")}
               sizes={PRINT_SIZES}
               alt="Tela do SurfRise com a análise feita por IA e três ajustes sugeridos para a próxima sessão."

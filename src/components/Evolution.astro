@@ -10,6 +10,7 @@ const registrado = [
   { k: "Tamanho da onda", d: "a condição que você enfrentou" },
   { k: "Prancha usada", d: "com que equipamento" },
 ];
+import { asset } from "../data/assets";
 import { PRINT_SIZES, printSrcSet } from "../data/prints";
 ---
 
@@ -36,7 +37,7 @@ import { PRINT_SIZES, printSrcSet } from "../data/prints";
           <div class="sr-phone-screen">
             <span class="sr-phone-notch" aria-hidden="true"></span>
             <img
-              src="/prints/01-home.webp"
+              src={asset("/prints/01-home.webp")}
               srcset={printSrcSet("/prints/01-home.webp")}
               sizes={PRINT_SIZES}
               alt="Lista de sessões no SurfRise, com pico, data, nota, tamanho da onda e prancha usada."

@@ -1,5 +1,6 @@
 ---
 import AspectGrid from "./AspectGrid.tsx";
+import { asset } from "../data/assets";
 import { PRINT_SIZES, printSrcSet } from "../data/prints";
 ---
 
@@ -28,7 +29,7 @@ import { PRINT_SIZES, printSrcSet } from "../data/prints";
             <div class="sr-phone-screen">
               <span class="sr-phone-notch" aria-hidden="true"></span>
               <img
-                src="/prints/03-analise.webp"
+                src={asset("/prints/03-analise.webp")}
                 srcset={printSrcSet("/prints/03-analise.webp")}
                 sizes={PRINT_SIZES}
                 alt="Tela de análise do SurfRise mostrando a nota geral 6.5 e a pontuação de cada aspecto."

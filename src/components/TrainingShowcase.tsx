@@ -1,3 +1,4 @@
+import { asset } from "../data/assets";
 import { PRINT_SIZES, printSrcSet } from "../data/prints";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import { useRef } from "react";
@@ -34,7 +35,7 @@ export default function TrainingShowcase() {
             <motion.div className="sr-scrollstack" style={{ y }}>
               <div className="sr-shot">
                 <img
-                  src="/prints/05-treino.webp"
+                  src={asset("/prints/05-treino.webp")}
                   srcSet={printSrcSet("/prints/05-treino.webp")}
                   sizes={PRINT_SIZES}
                   alt="Plano de treino gerado pelo SurfRise: 3 treinos e 12 exercícios a partir da sessão."
@@ -46,7 +47,7 @@ export default function TrainingShowcase() {
               </div>
               <div className="sr-shot">
                 <img
-                  src="/prints/06-treino-detalhe.webp"
+                  src={asset("/prints/06-treino-detalhe.webp")}
                   srcSet={printSrcSet("/prints/06-treino-detalhe.webp")}
                   sizes={PRINT_SIZES}
                   alt="Detalhe de um bloco de treino com exercícios, séries, repetições e instruções."

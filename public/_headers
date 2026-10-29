@@ -1,0 +1,21 @@
+# Cabeçalhos do Cloudflare Pages (vai para dist/_headers no build).
+
+# Saída do build: o nome já leva hash, então nunca muda de conteúdo.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Estes não têm hash no nome, mas toda referência na página leva ?v=<hash do
+# conteúdo> (src/data/assets.ts). Imagem nova = URL nova, então também podem
+# ficar um ano em cache. Referência nova a eles sem asset() = imagem velha
+# presa no navegador de quem já visitou.
+/prints/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/brand/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/hero-tall.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/hero-wide.webp
+  Cache-Control: public, max-age=31536000, immutable

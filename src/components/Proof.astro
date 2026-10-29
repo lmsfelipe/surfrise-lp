@@ -10,6 +10,7 @@ const shots = [
 ];
 
 const track = [...shots, ...shots];
+import { asset } from "../data/assets";
 import { PRINT_SIZES, printSrcSet } from "../data/prints";
 ---
 
@@ -35,7 +36,7 @@ import { PRINT_SIZES, printSrcSet } from "../data/prints";
               <div class="sr-phone-screen">
                 <span class="sr-phone-notch" aria-hidden="true" />
                 <img
-                  src={s.src}
+                  src={asset(s.src)}
                   srcset={printSrcSet(s.src)}
                   sizes={PRINT_SIZES}
                   alt={i >= shots.length ? "" : s.alt}

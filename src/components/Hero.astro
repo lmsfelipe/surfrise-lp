@@ -1,9 +1,12 @@
 ---
 import HeroCanvas from "./HeroCanvas.tsx";
 import HeroCard from "./HeroCard.tsx";
+import { asset } from "../data/assets";
 import { site } from "../data/site";
 
 const words = ["Surfe.", "Analise.", "Evolua."];
+// As URLs vão como variáveis porque precisam do ?v= de asset(), que o CSS não tem.
+const posterVars = `--poster-tall: url(${asset("/hero-tall.webp")}); --poster-wide: url(${asset("/hero-wide.webp")})`;
 ---
 
 <section id="topo" class="sr-section sr-dark sr-hero sr-grain">
@@ -16,7 +19,7 @@ const words = ["Surfe.", "Analise.", "Evolua."];
     errada. O download continua começando cedo: Base.astro dá preload nos dois
     pôsteres, o que chega antes até do que o preload scanner acharia a <img>.
   */}
-  <div class="sr-hero-poster" aria-hidden="true"></div>
+  <div class="sr-hero-poster" aria-hidden="true" style={posterVars}></div>
 
   {/*
     Camada viva: só é hidratada em tela grande e sem prefers-reduced-motion.
@@ -68,7 +71,14 @@ const words = ["Surfe.", "Analise.", "Evolua."];
     </div>
 
     <div class="sr-hero-stage">
-      <HeroCard client:visible />
+      {/*
+        No celular o card fica logo abaixo da dobra, com só a borda de cima à
+        vista (em 412×823, ~15 px). Sem a margem negativa isso já bastava para
+        hidratar e baixar o React junto com a hero, no caminho do LCP. Assim o
+        card hidrata — e faz a entrada — quando aparece de fato. No desktop ele
+        está inteiro na tela e nada muda.
+      */}
+      <HeroCard client:visible={{ rootMargin: "0px 0px -96px 0px" }} />
     </div>
   </div>
 
@@ -97,13 +107,13 @@ const words = ["Surfe.", "Analise.", "Evolua."];
     /* Esticar, não recortar: mantém a linha do horizonte na mesma fração da
        altura em qualquer proporção de tela — que é o que faz o shader entrar
        por cima sem dar um salto. */
-    background-image: url("/hero-tall.webp");
+    background-image: var(--poster-tall);
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
   @media (min-width: 1000px) {
     .sr-hero-poster {
-      background-image: url("/hero-wide.webp");
+      background-image: var(--poster-wide);
     }
 
     /*
