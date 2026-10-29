@@ -45,6 +45,8 @@ const words = ["Surfe.", "Analise.", "Evolua."];
         }
       </h1>
 
+      <h2 class="sr-hero-tagline">Análise de surf com nota, diagnóstico e treino</h2>
+
       <p class="sr-lead sr-hero-lead">
         Descubra o que está limitando seu surf e o que fazer na próxima sessão para melhorar.
       </p>
@@ -82,7 +84,9 @@ const words = ["Surfe.", "Analise.", "Evolua."];
     min-height: 100svh;
     display: flex;
     align-items: center;
-    padding-block: clamp(7.5rem, 16vh, 11rem) clamp(6rem, 12vh, 9rem);
+    /* O topo saiu de 16vh para 13vh para pagar a linha do h2 abaixo do título:
+       em 1440×900 os botões continuam acima da dobra, como antes dele. */
+    padding-block: clamp(7.5rem, 13vh, 11rem) clamp(6rem, 12vh, 9rem);
     overflow: hidden;
   }
 
@@ -186,6 +190,7 @@ const words = ["Surfe.", "Analise.", "Evolua."];
      mantém a mesma leitura (badge → título → lead → sub → botões) dentro de
      ~0,3 s, que o olho ainda lê como sequência e o Lighthouse não penaliza. */
   .sr-hero-badge,
+  .sr-hero-tagline,
   .sr-hero-lead,
   .sr-hero-sub,
   .sr-hero-actions,
@@ -194,6 +199,7 @@ const words = ["Surfe.", "Analise.", "Evolua."];
     animation: sr-hero-rise 0.62s var(--ease-fluid) forwards;
   }
   .sr-hero-badge { animation-delay: 0s; }
+  .sr-hero-tagline { animation-delay: 0.06s; }
   .sr-hero-lead { animation-delay: 0.1s; }
   .sr-hero-sub { animation-delay: 0.16s; }
   .sr-hero-actions { animation-delay: 0.22s; }
@@ -205,7 +211,20 @@ const words = ["Surfe.", "Analise.", "Evolua."];
   }
 
   .sr-hero-title {
-    margin: clamp(1.5rem, 3vw, 2.1rem) 0 clamp(1.4rem, 2.6vw, 1.9rem);
+    margin: clamp(1.5rem, 3vw, 2.1rem) 0 clamp(0.75rem, 1.4vw, 1rem);
+  }
+
+  /* É h2 pela palavra-chave ("análise de surf") que o slogan do h1 não tem —
+     visualmente fica como linha de apoio do slogan, não como título de seção. */
+  .sr-hero-tagline {
+    margin-bottom: clamp(1rem, 2vw, 1.4rem);
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: #ffe0b0;
+    text-wrap: balance;
   }
   .sr-hero-line {
     display: block;
@@ -226,6 +245,7 @@ const words = ["Surfe.", "Analise.", "Evolua."];
 
   :global(html.no-motion) .sr-hero-word,
   :global(html.no-motion) .sr-hero-badge,
+  :global(html.no-motion) .sr-hero-tagline,
   :global(html.no-motion) .sr-hero-lead,
   :global(html.no-motion) .sr-hero-sub,
   :global(html.no-motion) .sr-hero-actions,
